@@ -1,7 +1,13 @@
 import React from 'react';
 
-const Create = () => {
-    return <div>Create</div>
-};
+class Create extends React.Component {
+    render() {
+        return (
+            <div>
+                Create
+            </div>
+        )
+    }
+}
 
 export default Create;

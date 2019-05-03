@@ -5,8 +5,9 @@ class Cover extends React.Component {
     render () {
         return (
             <div>
-                <h1>Cover</h1>
+                <h1>SeaQL</h1>
                 <Link to="/login">Login</Link>
+                <br/>
                 <Link to="/register">Register</Link>
             </div>
         )
