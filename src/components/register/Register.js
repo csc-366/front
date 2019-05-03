@@ -6,11 +6,34 @@ class Register extends React.Component {
             <div>
                 <h1>Register</h1>
                 <form>
-                    <input placeholder="First Name"/>
-                    <input placeholder="Last Name"/>
-                    <input placeholder="Email"/>
-                    <input placeholder="Password"/>
-                    <input placeholder="Confirm Password"/>
+                    <label>
+                        First Name
+                        <input placeholder="First Name"/>
+                    </label>
+                    <br/>
+                    <label>
+                        Last Name
+                        <input placeholder="Last Name"/>
+                    </label>
+                    <br/>
+                    <label>
+                        Email
+                        <input placeholder="Email"/>
+                    </label>
+                    <br/>
+
+                    <label>
+                        Password
+                        <input placeholder="Password"/>
+                    </label>
+                    <br/>
+
+                    <label>
+                        Confirm
+                        <input placeholder="Confirm Password"/>
+                    </label>
+                    <br/>
+
                     <button type="submit" onClick={(e) => e.preventDefault()}>Submit</button>
                 </form>
             </div>
