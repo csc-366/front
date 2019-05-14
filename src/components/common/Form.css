@@ -1,0 +1,27 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    max-width: 60%;
+    align-items: flex-end;
+}
+
+.label {
+    padding: 3px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.label-text {
+    padding-right: 5px;
+}
+
+.input {
+}
+
+.submit {
+    text-decoration: none;
+    padding: 5px;
+    align-self: center;
+}

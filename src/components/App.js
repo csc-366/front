@@ -5,6 +5,7 @@ import Login from './login/Login';
 import Dashboard from './dashboard/Dashboard';
 import Details from "./details/Details";
 import Register from "./register/Register";
+import "./App.css";
 
 const App = () => {
     return (
