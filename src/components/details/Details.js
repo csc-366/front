@@ -1,4 +1,5 @@
 import React from 'react';
+import Header from '../common/Header';
 
 const dummyData = [
     {
@@ -104,6 +105,8 @@ class Details extends React.Component {
 
     render() {
         return (
+            <>
+                <Header/>
             <div>
                 <h1>Details</h1>
                 <table>
@@ -115,6 +118,7 @@ class Details extends React.Component {
                     </tbody>
                 </table>
             </div>
+                </>
         )
     }
 }
