@@ -6,7 +6,7 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import Divider from "@material-ui/core/Divider";
 import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
+import EditInfoButton from "./EditInfoButton";
 
 const styles = theme => ({
     root: {
@@ -26,47 +26,75 @@ class Account extends React.Component {
             lastName: "Doe",
             username: "joe",
             password: "password",
-            email: "joe@john.doe"
+            email: "joe@john.doe",
+            role: "Citizen Joe",
+            affiliation: "Doe"
         };
     }
+
+    handleChange = type => value => {
+        this.setState({[type]: value});
+    };
 
     render() {
         const {classes} = this.props;
         const info = [
             {
-                type: "Name",
-                value: this.state.firstName + " " + this.state.lastName
+                key: "firstName",
+                desc: "First Name",
+                value: this.state.firstName
             },
             {
-                type: "Username",
+                key: "lastName",
+                desc: "Last Name",
+                value: this.state.lastName
+            },
+            {
+                key: "username",
+                desc: "Username",
                 value: this.state.username
             },
             {
-                type: "Password",
+                key: "password",
+                desc: "Password",
                 value: "*".repeat(this.state.password.length)
             },
             {
-                type: "Email",
+                key: "email",
+                desc: "Email",
                 value: this.state.email
+            },
+            {
+                key: "role",
+                desc: "Role",
+                value: this.state.role
+            },
+            {
+                key: "affiliation",
+                desc: "Affiliation",
+                value: this.state.affiliation
             }
         ];
 
         return (
             <List className={classes.root}>
                 {info.map(entry => (
-                    <React.Fragment>
+                    <React.Fragment key={entry.key}>
                         <li>
                             <Typography
                                 className={classes.dividerFullWidth}
                                 color="textSecondary"
                                 variant="caption"
                             >
-                                {entry.type}
+                                {entry.desc}
                             </Typography>
                         </li>
                         <ListItem>
                             <ListItemText primary={entry.value}/>
-                            <Button>Edit</Button>
+                            <EditInfoButton
+                                desc={entry.desc}
+                                handleChange={this.handleChange(entry.key)}
+                            />
                         </ListItem>
                         <Divider component="li"/>
                     </React.Fragment>
