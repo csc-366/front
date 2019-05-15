@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -30,7 +31,8 @@ const Header = (props) => {
                         SeaQL
                     </Typography>
                     <CreateModalButton/>
-                    <Button color={"inherit"}>Account</Button>
+                    <Button color={"inherit"} component={Link} to="/dashboard">Dashboard</Button>
+                    <Button color={"inherit"} component={Link} to="/account">Account</Button>
                     <Button color={"inherit"}>Logout</Button>
                 </Toolbar>
             </AppBar>
