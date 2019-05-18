@@ -4,30 +4,33 @@ import {withStyles} from '@material-ui/core/styles';
 import MeasurementField from './MeasurementField';
 import Button from '@material-ui/core/Button';
 import defaultStyles from "../../../defaultStyles";
+import {FieldArray} from 'redux-form';
 
 class MeasurementManager extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             count: props.count,
-            measurements: {},
-            handleMeasurements: props.handleMeasurements
         };
     }
 
-    handleMeasurement = (measurementKey) => (standardLength, curvilinearLength, axillaryGirth, totalMass, massTare, animalMass) => {
-        const measurements = {...this.state.measurements,[measurementKey]: {standardLength,curvilinearLength,axillaryGirth,totalMass,massTare,animalMass}};
-        this.setState({measurements}, () => {
-            this.state.handleMeasurements(this.state.measurements)
-        });
-    };
-
-    renderFields = (count) => {
-        let fields = [];
-        for (let i = 0; i < count; i++) {
-            fields.push(<MeasurementField key={i} keyId={i} handleMeasurement={this.handleMeasurement(i)}/>)
+    renderFields = (count) => ({fields}) => {
+        for(let i = 0; i < (count - fields.length); i++) {
+            fields.push({
+                standardLength: null,
+                curvilinearLength: null,
+                axillaryGirth: null,
+                totalMass: null,
+                massTare: null
+            })
         }
-        return fields;
+        for (let i = (fields.length - count); i > 0; i--) {
+            fields.remove(fields.length - 1)
+        }
+
+        return fields.map((field, index) => {
+            return (<MeasurementField key={index} name={field}/>)
+        });
     };
 
     addMeasurement = () => {this.setState({count: this.state.count + 1})};
@@ -37,7 +40,7 @@ class MeasurementManager extends React.Component {
         const {classes} = this.props;
         return (
             <div className={classes.formColumn}>
-                {this.renderFields(this.state.count)}
+                <FieldArray name={"measurements"} component={this.renderFields(this.state.count)}/>
                 <div className={classes.formRow}>
                     <Button
                         color={"primary"}
@@ -61,8 +64,7 @@ class MeasurementManager extends React.Component {
 
 MeasurementManager.propTypes = {
     classes: PropTypes.object.isRequired,
-    count: PropTypes.number.isRequired,
-    handleMeasurements: PropTypes.func.isRequired
+    count: PropTypes.number.isRequired
 };
 
 export default withStyles(defaultStyles)(MeasurementManager);

@@ -5,40 +5,43 @@ import FieldLeaderField from './FieldLeaderField';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon'
 import defaultStyles from "../../../defaultStyles";
+import {FieldArray} from 'redux-form';
 
-class FieldLeaderManager extends React.Component {
+class FieldLeaderArray extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            count: props.count,
-            leaders: {},
-            handleLeaders: props.handleLeaders
+            count: 1,
         };
     }
 
-    handleLeader = (leaderKey) => (leader) => {
-        const leaders = {...this.state.leaders,[leaderKey]: leader};
-        this.setState({leaders}, () => {
-            this.state.handleLeaders(this.state.leaders)
+    addFieldLeader = () => {
+        this.setState({count: (this.state.count === 4) ? 4 : this.state.count + 1})
+    };
+    removeFieldLeader = () => {
+        this.setState({count: (this.state.count === 0) ? 0 : this.state.count - 1})
+    };
+
+    renderFields = (count) => ({fields}) => {
+        for (let i = 0; i < (count - fields.length); i++) {
+            fields.push('')
+        }
+        for (let i = (fields.length - count); i > 0; i--) {
+            fields.remove(fields.length - 1)
+        }
+
+        return fields.map((field, index) => {
+            return (
+                <FieldLeaderField key={index} name={field}/>
+            )
         });
     };
-
-    renderFields = (count) => {
-        let fields = [];
-        for (let i = 0; i < count; i++) {
-            fields.push(<FieldLeaderField key={i} keyId={i} handleLeader={this.handleLeader(i)}/>)
-        }
-        return fields;
-    };
-
-    addFieldLeader = () => {this.setState({count: (this.state.count === 4) ? 4 : this.state.count + 1})};
-    removeFieldLeader = () => {this.setState({count: (this.state.count === 1) ? 1 : this.state.count - 1})};
 
     render() {
         const {classes} = this.props;
         return (
             <div className={classes.formRow}>
-                {this.renderFields(this.state.count)}
+                <FieldArray name={"fieldLeaders"} component={this.renderFields(this.state.count)}/>
                 <div className={classes.formRow}>
                     <Button
                         color={"primary"}
@@ -61,10 +64,8 @@ class FieldLeaderManager extends React.Component {
     }
 }
 
-FieldLeaderManager.propTypes = {
-    classes: PropTypes.object.isRequired,
-    count: PropTypes.number.isRequired,
-    handleLeaders: PropTypes.func.isRequired
+FieldLeaderArray.propTypes = {
+    classes: PropTypes.object.isRequired
 };
 
-export default withStyles(defaultStyles)(FieldLeaderManager);
+export default withStyles(defaultStyles)(FieldLeaderArray);

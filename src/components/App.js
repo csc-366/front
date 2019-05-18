@@ -4,6 +4,7 @@ import Cover from './cover/Cover';
 import Login from './login/Login';
 import Dashboard from './dashboard/Dashboard';
 import Register from "./register/Register";
+
 import "./App.css";
 
 const App = () => {

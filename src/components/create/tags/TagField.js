@@ -3,110 +3,80 @@ import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 
 import TextField from '@material-ui/core/TextField';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox'
-import Input from '@material-ui/core/Input';
+
+import {Field, Fields} from 'redux-form';
 
 import defaultStyles from '../../../defaultStyles';
+import SelectField from "../SelectField";
 
 const styles = theme => {
     return {...defaultStyles(theme)}
 };
 
 class TagField extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            key: props.keyId,
-            number: '',
-            position: '',
-            color: '',
-            new: '',
-            handleTag: props.handleTag
-        }
-    }
-
-    handleChange = (component) => (event) => {
-        let value = (component === 'isNew') ? !this.state.isNew : event.target.value;
-
-        this.setState({[component]: value}, () => {
-            const {number, color, position, isNew} = this.state;
-            this.state.handleTag(number, color, position, isNew)
-        })
+    renderTagNumber = ({input: {value, onChange}, classes}) => {
+        return (
+            <TextField
+                id={"tagNumber"}
+                label={"Tag Number"}
+                className={classes.textField}
+                value={value}
+                onChange={(event) => onChange(event.target.value)}
+            />
+        )
     };
 
-    render() {
-        const {classes} = this.props;
+    renderIsNew = ({input: {onChange, value}}) => {
         return (
-            <div key={this.state.key} className={classes.formRow}>
-                <TextField
-                    id={"tagNumber"}
-                    label={"Tag Number"}
-                    className={classes.textField}
-                    value={this.state.number}
-                    onChange={this.handleChange('number')}
-                />
+            <FormControlLabel
+                control={
+                    <Checkbox
+                        checked={value ? 'checked' : ''}
+                        onChange={() => onChange(!value)}
+                    />
+                }
+                label="New Mark?"
+            />
+        );
+    };
 
-                <FormControl className={classes.formControl}>
-                    <InputLabel className={classes.textFieldLabel} htmlFor={"tagColorSelector"}>
-                        Tag Color
-                    </InputLabel>
-                    <Select
-                        value={this.state.color}
-                        className={classes.textField}
-                        input={<Input name={"tagColor"} id={"tagColorSelector"}/>}
-                        onChange={this.handleChange('color')}
-                    >
-                        <MenuItem value={"W"}>White</MenuItem>
-                        <MenuItem value={"B"}>Blue</MenuItem>
-                        <MenuItem value={"G"}>Green</MenuItem>
-                        <MenuItem value={"P"}>Pink</MenuItem>
-                        <MenuItem value={"V"}>Violet</MenuItem>
-                        <MenuItem value={"R"}>Red</MenuItem>
-                        <MenuItem value={"Y"}>Yellow</MenuItem>
-                        <MenuItem value={"O"}>Orange</MenuItem>
-                    </Select>
-                </FormControl>
+    renderTag = ({classes, name}) => {
+        return (
+            <div className={classes.formRow}>
+                <Field name={`${name}.number`} component={this.renderTagNumber} classes={classes}/>
 
+                <SelectField name={`${name}.color`} label={"Color"}
+                             values={Object.entries({
+                                 W: "White",
+                                 B: "Blue",
+                                 G: "Green",
+                                 P: "Pink",
+                                 V: "Violet",
+                                 R: "Red",
+                                 Y: "Yellow",
+                                 O: "Orange"
+                             })}/>
 
-                <FormControl className={classes.formControl}>
-                    <InputLabel className={classes.textFieldLabel} htmlFor={"tagPositionSelector"}>
-                        Tag Position
-                    </InputLabel>
-                    <Select
-                        value={this.state.position}
-                        className={classes.textField}
-                        input={<Input name="tagPosition" id="tagPositionSelector"/>}
-                        onChange={this.handleChange('position')}
-                    >
-                        <MenuItem value={"P"}>Left</MenuItem>
-                        <MenuItem value={"W"}>Right</MenuItem>
-                        <MenuItem value={"J"}>Back</MenuItem>
-                    </Select>
-                </FormControl>
+                <SelectField name={`${name}.position`} label={"Position"}
+                             values={Object.entries({P: "Left", W: "Right", J: "Back"})}/>
 
-                <FormControlLabel
-                    control={
-                        <Checkbox
-                            checked={this.state.isNew ? 'checked' : ''}
-                            onChange={this.handleChange('isNew')}
-                        />
-                    }
-                    label="New Tag?"
-                />
+                <Field name={`${name}.isNew`} component={this.renderIsNew} classes={classes}/>
             </div>
         )
+    }
+
+    render() {
+        const {classes, name} = this.props;
+        return (<Fields names={['number', 'color', 'position', 'isNew']}
+                        component={this.renderTag} name={name} classes={classes}/>)
     }
 }
 
 TagField.propTypes = {
     classes: PropTypes.object.isRequired,
-    keyId: PropTypes.number.isRequired,
-    handleTag: PropTypes.func.isRequired
+    name: PropTypes.string.isRequired
 };
 
 export default withStyles(styles)(TagField);

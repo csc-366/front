@@ -3,89 +3,72 @@ import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 
 import TextField from '@material-ui/core/TextField';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox'
-import Input from '@material-ui/core/Input';
 import defaultStyles from '../../../defaultStyles';
 
-const styles = theme => {return {...defaultStyles(theme)}};
+import {Field, Fields} from 'redux-form';
+import SelectField from "../SelectField";
+
+const styles = theme => {
+    return {...defaultStyles(theme)}
+};
 
 class MarkField extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            key: props.keyId,
-            number: '',
-            position: '',
-            isNew: '',
-            handleMark: props.handleMark
-        }
-    }
+    renderMarkNumber = ({input: {value, onChange}, classes}) => {
+        return (
+            <TextField
+                id={"markNumber"}
+                label={"Mark Number"}
+                className={classes.textField}
+                value={value}
+                onChange={(event) => onChange(event.target.value)}
+            />
+        );
+    };
 
-    handleChange = (component) => (event) => {
-        let value;
-        if(component === 'isNew') {
-            value = !this.state.isNew;
-        } else {
-            value = event.target.value
-        }
+    renderIsNew = ({input: {onChange, value}}) => {
+        return (
+            <FormControlLabel
+                control={
+                    <Checkbox
+                        checked={value ? 'checked' : ''}
+                        onChange={() => onChange(!value)}
+                    />
+                }
+                label="New Mark?"
+            />
+        );
+    };
 
-        this.setState({[component]: value}, () => {
-            const {number, position, isNew} = this.state;
-            this.state.handleMark(number, position, isNew)
-        });
+    renderMark = ({classes, name}) => {
+        return (
+            <div className={classes.formRow}>
+                <Field name={`${name}.number`} component={this.renderMarkNumber} classes={classes}/>
+
+                <SelectField name={`${name}.position`} label={'Position'}
+                             values={Object.entries({L: 'Left', R: 'Right', B: 'Back'})}/>
+
+                <Field name={`${name}.isNew`} component={this.renderIsNew} classes={classes}/>
+            </div>
+        );
     };
 
     render() {
-        const {classes} = this.props;
+        const {classes, name} = this.props;
         return (
-            <div key={this.state.key} className={classes.formRow}>
-                <TextField
-                    id={"markNumber"}
-                    label={"Mark Number"}
-                    className={classes.textField}
-                    value={this.state.number}
-                    onChange={this.handleChange('number')}
-                />
-
-                <FormControl className={classes.formControl}>
-                    <InputLabel className={classes.textFieldLabel} htmlFor={"markPositionSelector"}>
-                        Mark Position
-                    </InputLabel>
-                    <Select
-                        value={this.state.position}
-                        className={classes.textField}
-                        input={<Input name="markPosition" id="markPositionSelector"/>}
-                        onChange={this.handleChange('position')}
-                    >
-                        <MenuItem value={"L"}>Left</MenuItem>
-                        <MenuItem value={"R"}>Right</MenuItem>
-                        <MenuItem value={"B"}>Back</MenuItem>
-                    </Select>
-                </FormControl>
-
-                <FormControlLabel
-                    control={
-                        <Checkbox
-                            checked={this.state.isNew ? 'checked':''}
-                            onChange={this.handleChange('isNew')}
-                        />
-                    }
-                    label="New Mark?"
-                />
-            </div>
+            <Fields names={[
+                'number',
+                'position',
+                'isNew'
+            ]} component={this.renderMark} name={name} classes={classes}/>
         )
     }
 }
 
 MarkField.propTypes = {
     classes: PropTypes.object.isRequired,
-    keyId: PropTypes.number.isRequired,
-    handleMark: PropTypes.func.isRequired
+    name: PropTypes.string.isRequired
 };
 
 export default withStyles(styles)(MarkField);

@@ -50,7 +50,7 @@ let ObservationTableToolbar = props => {
                     </Typography>
                 ) : (
                     <Typography variant="h6" id="tableTitle">
-                        Nutrition
+                        Pending Observations
                     </Typography>
                 )}
             </div>
