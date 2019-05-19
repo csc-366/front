@@ -10,9 +10,7 @@ import TableRow from "@material-ui/core/TableRow";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import Paper from "@material-ui/core/Paper";
 import Tooltip from "@material-ui/core/Tooltip";
-import {lighten} from "@material-ui/core/styles/colorManipulator";
 
 let counter = 0;
 
@@ -106,48 +104,6 @@ LogTableHead.propTypes = {
     rowCount: PropTypes.number.isRequired
 };
 
-const toolbarStyles = theme => ({
-    root: {
-        paddingRight: theme.spacing.unit
-    },
-    highlight:
-        theme.palette.type === "light"
-            ? {
-                color: theme.palette.secondary.main,
-                backgroundColor: lighten(theme.palette.secondary.light, 0.85)
-            }
-            : {
-                color: theme.palette.text.primary,
-                backgroundColor: theme.palette.secondary.dark
-            },
-    spacer: {
-        flex: "1 1 100%"
-    },
-    actions: {
-        color: theme.palette.text.secondary
-    },
-    title: {
-        flex: "0 0 auto"
-    }
-});
-
-let LogTableToolbar = props => {
-    const {classes} = props;
-
-    return (
-        <Toolbar>
-            <div className={classes.title}>
-                <Typography variant="h6" id="tableTitle">
-                    Nutrition
-                </Typography>
-            </div>
-            <div className={classes.spacer}/>
-        </Toolbar>
-    );
-};
-
-LogTableToolbar = withStyles(toolbarStyles)(LogTableToolbar);
-
 const styles = theme => ({
     root: {
         width: "100%",
@@ -210,8 +166,14 @@ class LogTable extends React.Component {
             rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 
         return (
-            <Paper className={classes.root}>
-                <LogTableToolbar/>
+            <React.Fragment className={classes.root}>
+                <Toolbar>
+                    <div className={classes.title}>
+                        <Typography variant="h6" id="tableTitle">
+                            Nutrition
+                        </Typography>
+                    </div>
+                </Toolbar>
                 <Table className={classes.table} aria-labelledby="tableTitle">
                     <LogTableHead
                         order={order}
@@ -257,7 +219,7 @@ class LogTable extends React.Component {
                     onChangePage={this.handleChangePage}
                     onChangeRowsPerPage={this.handleChangeRowsPerPage}
                 />
-            </Paper>
+            </React.Fragment>
         );
     }
 }
