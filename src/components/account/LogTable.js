@@ -174,36 +174,38 @@ class LogTable extends React.Component {
                         </Typography>
                     </div>
                 </Toolbar>
-                <Table className={classes.table} aria-labelledby="tableTitle">
-                    <LogTableHead
-                        order={order}
-                        orderBy={orderBy}
-                        onRequestSort={this.handleRequestSort}
-                        rowCount={data.length}
-                    />
-                    <TableBody>
-                        {stableSort(data, getSorting(order, orderBy))
-                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                            .map(n => {
-                                return (
-                                    <TableRow hover tabIndex={-1} key={n.id}>
-                                        <TableCell component="th" scope="row">
-                                            {n.name}
-                                        </TableCell>
-                                        <TableCell>{n.calories}</TableCell>
-                                        <TableCell>{n.fat}</TableCell>
-                                        <TableCell>{n.carbs}</TableCell>
-                                        <TableCell>{n.protein}</TableCell>
-                                    </TableRow>
-                                );
-                            })}
-                        {emptyRows > 0 && (
-                            <TableRow style={{height: 49 * emptyRows}}>
-                                <TableCell colSpan={6}/>
-                            </TableRow>
-                        )}
-                    </TableBody>
-                </Table>
+                <div className={classes.tableWrapper}>
+                    <Table className={classes.table} aria-labelledby="tableTitle">
+                        <LogTableHead
+                            order={order}
+                            orderBy={orderBy}
+                            onRequestSort={this.handleRequestSort}
+                            rowCount={data.length}
+                        />
+                        <TableBody>
+                            {stableSort(data, getSorting(order, orderBy))
+                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                .map(n => {
+                                    return (
+                                        <TableRow hover tabIndex={-1} key={n.id}>
+                                            <TableCell component="th" scope="row">
+                                                {n.name}
+                                            </TableCell>
+                                            <TableCell>{n.calories}</TableCell>
+                                            <TableCell>{n.fat}</TableCell>
+                                            <TableCell>{n.carbs}</TableCell>
+                                            <TableCell>{n.protein}</TableCell>
+                                        </TableRow>
+                                    );
+                                })}
+                            {emptyRows > 0 && (
+                                <TableRow style={{height: 49 * emptyRows}}>
+                                    <TableCell colSpan={6}/>
+                                </TableRow>
+                            )}
+                        </TableBody>
+                    </Table>
+                </div>
                 <TablePagination
                     rowsPerPageOptions={[5, 10, 25]}
                     component="div"
