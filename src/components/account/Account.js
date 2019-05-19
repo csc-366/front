@@ -7,6 +7,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Divider from "@material-ui/core/Divider";
 import Typography from "@material-ui/core/Typography";
 import EditInfoButton from "./EditInfoButton";
+import LogTable from "./LogTable";
 
 const styles = theme => ({
     root: {
@@ -77,29 +78,32 @@ class Account extends React.Component {
         ];
 
         return (
-            <List className={classes.root}>
-                {info.map(entry => (
-                    <React.Fragment key={entry.key}>
-                        <li>
-                            <Typography
-                                className={classes.dividerFullWidth}
-                                color="textSecondary"
-                                variant="caption"
-                            >
-                                {entry.desc}
-                            </Typography>
-                        </li>
-                        <ListItem>
-                            <ListItemText primary={entry.value}/>
-                            <EditInfoButton
-                                desc={entry.desc}
-                                handleChange={this.handleChange(entry.key)}
-                            />
-                        </ListItem>
-                        <Divider component="li"/>
-                    </React.Fragment>
-                ))}
-            </List>
+            <React.Fragment>
+                <List className={classes.root}>
+                    {info.map(entry => (
+                        <React.Fragment key={entry.key}>
+                            <li>
+                                <Typography
+                                    className={classes.dividerFullWidth}
+                                    color="textSecondary"
+                                    variant="caption"
+                                >
+                                    {entry.desc}
+                                </Typography>
+                            </li>
+                            <ListItem>
+                                <ListItemText primary={entry.value}/>
+                                <EditInfoButton
+                                    desc={entry.desc}
+                                    handleChange={this.handleChange(entry.key)}
+                                />
+                            </ListItem>
+                            <Divider component="li"/>
+                        </React.Fragment>
+                    ))}
+                </List>
+                <LogTable/>
+            </React.Fragment>
         );
     }
 }
