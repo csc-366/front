@@ -166,7 +166,7 @@ class LogTable extends React.Component {
             rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 
         return (
-            <React.Fragment className={classes.root}>
+            <React.Fragment>
                 <Toolbar>
                     <div className={classes.title}>
                         <Typography variant="h6" id="tableTitle">
