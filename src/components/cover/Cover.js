@@ -17,7 +17,7 @@ const styles = theme => ({
         alignItems: 'center',
         justifyContent: 'center',
 
-        backgroundImage: `url(https://s3-us-west-1.amazonaws.com/csc366/20180414_164750.jpg)`,
+        backgroundImage: `url(https://images.unsplash.com/photo-1550940934-bc02c7c59618?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=3900&q=80)`,
         backgroundSize: 'cover',
         backgroundPosition: 'center'
     },
