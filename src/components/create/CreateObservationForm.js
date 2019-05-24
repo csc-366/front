@@ -14,6 +14,7 @@ import TextField from '@material-ui/core/TextField'
 import {Field} from 'redux-form';
 import MeasurementManager from "./measurements/MeasurementManager";
 import Button from '@material-ui/core/Button'
+import {setObservationDate, setFormData} from "../../actions/createObservation";
 
 const styles = theme => ({
     ...defaultStyles(theme),
@@ -72,9 +73,9 @@ class CreateObservationForm extends React.Component {
     };
 
     render() {
-        const {handleSubmit, ageClass, sex, classes} = this.props;
+        const {ageClass, sex, classes} = this.props;
         return (
-            <form onSubmit={handleSubmit}>
+            <form>
                 <DateField/>
                 <SelectField label={"Location"} name={"location"}
                              values={Object.entries({
@@ -144,11 +145,16 @@ const form = reduxForm({
 
 const selector = formValueSelector('createObservationForm');
 
-export default connect(state => {
+const mapStateToProps = state => {
     const ageClass = selector(state, 'ageClass');
     const sex = selector(state, 'sex');
 
     return {
-        ageClass, sex
+        ageClass,
+        sex,
+        observationData: state.observationData,
+        formData: state.form.observationData
     }
-})(form);
+};
+
+export default connect(mapStateToProps, {setObservationDate, setFormData})(form);

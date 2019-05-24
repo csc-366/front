@@ -10,7 +10,7 @@ const styles = theme => {
 };
 
 class FieldLeaderField extends React.Component {
-    renderFieldLeader({input: {name, value, onChange}, classes}) {
+    renderFieldLeader({input: {value, onChange}, classes}) {
         return (
             <div className={classes.formRow}>
                 <TextField
