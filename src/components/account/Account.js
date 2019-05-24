@@ -32,7 +32,7 @@ class Account extends React.Component {
             email: "joe@john.doe",
             role: "Citizen Joe",
             affiliation: "Doe",
-            checked: false
+            checked: true
         };
     }
 
@@ -87,38 +87,33 @@ class Account extends React.Component {
         const permissions = [
             {
                 key: 1,
-                name: "Permission 1",
+                name: "Adding Observations",
                 desc: "Permission 1 description"
             },
             {
                 key: 2,
-                name: "Permission 2",
+                name: "Approving Observations",
                 desc: "Permission 2 description"
             },
             {
                 key: 3,
-                name: "Permission 3",
+                name: "Modifying Observations",
                 desc: "Permission 3 description"
             },
             {
                 key: 4,
-                name: "Permission 4",
+                name: "Archiving Observations",
                 desc: "Permission 4 description"
             },
             {
                 key: 5,
-                name: "Permission 5",
+                name: "Mass Importing Observations",
                 desc: "Permission 5 description"
             },
             {
                 key: 6,
-                name: "Permission 6",
+                name: "Mass Exporting Observations",
                 desc: "Permission 6 description"
-            },
-            {
-                key: 7,
-                name: "Permission 7",
-                desc: "Permission 7 description"
             }
         ];
 
