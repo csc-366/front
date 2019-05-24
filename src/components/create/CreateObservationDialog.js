@@ -9,7 +9,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Icon from '@material-ui/core/Icon';
 import defaultStyles from '../../defaultStyles';
-import CreateObservationForm from "./CreateObservationForm";
+import CreateObservationStepper from "./CreateObservationStepper";
 
 const styles = theme => {
     return {
@@ -65,7 +65,8 @@ class CreateObservationDialog extends React.Component {
         //const {classes} = this.props;
         return (
             <DialogContent>
-                <CreateObservationForm/>
+                <CreateObservationStepper/>
+                {/*<CreateObservationForm/>*/}
             </DialogContent>
 
         );

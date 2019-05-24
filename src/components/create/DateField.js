@@ -21,9 +21,7 @@ class DateField extends React.Component {
                 id={"date"}
                 label={label}
                 type={"date"}
-                onChange={(event) => {
-                    onChange(event.target.value)
-                }}
+                onChange={(event) => onChange(event.target.value)}
                 InputLabelProps={{
                     shrink: true
                 }}
@@ -35,7 +33,7 @@ class DateField extends React.Component {
 
     render() {
         return (
-            <Field name={'date'} component={this.renderTextField} label={"Observation Text"}/>
+            <Field name={'date'} component={this.renderTextField} label={"Observation Date"}/>
         )
     }
 }
