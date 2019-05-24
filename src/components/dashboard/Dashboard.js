@@ -1,5 +1,4 @@
 import React from 'react';
-import Header from "../common/Header";
 import ObservationTable from "../common/table/ObservationTable";
 import {withStyles} from '@material-ui/core/styles';
 import defaultStyles from '../../defaultStyles';
@@ -35,7 +34,6 @@ class Dashboard extends React.Component {
         const {classes} = this.props;
         return (
             <div className="dashboard">
-                <Header/>
                 <div className={classes.singlePageContent}>
                     <ObservationTable/>
                 </div>
