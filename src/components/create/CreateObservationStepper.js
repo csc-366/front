@@ -7,6 +7,7 @@ import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import CreateObservationForm from './CreateObservationForm';
+import CreateObservationValidator from './CreateObservationValidator'
 import {setFormData} from "../../actions/createObservation";
 import {connect} from 'react-redux';
 import {getFormValues} from 'redux-form';
@@ -25,6 +26,11 @@ const styles = theme => ({
     stepperButtonContainer: {
         marginTop: theme.spacing.unit,
         marginBottom: theme.spacing.unit
+    },
+    stepContentContainer: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-start'
     }
 });
 
@@ -68,7 +74,9 @@ class CreateObservationStepper extends React.Component {
                     <CreateObservationForm />
                 );
             case 1:
-                return 'What is an ad group anyways?';
+                return (
+                    <CreateObservationValidator />
+                );
             case 2:
                 return 'This is the bit I really care about!';
             default:
@@ -97,7 +105,7 @@ class CreateObservationStepper extends React.Component {
                             <Button onClick={this.handleReset}>Reset</Button>
                         </div>
                     ) : (
-                        <div>
+                        <div className={classes.stepContentContainer}>
                             {this.getStepContent(activeStep)}
                             {/*<Typography className={classes.instructions}>{getStepContent(activeStep)}</Typography>*/}
                             <div className={classes.stepperButtonContainer}>
