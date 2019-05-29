@@ -6,6 +6,10 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import {connect} from 'react-redux';
+import {setUserInformation, login} from "../../actions/user";
+import {clearError} from "../../actions/error";
+import history from "../../history";
 
 const styles = theme => ({
     root: {
@@ -43,7 +47,7 @@ const styles = theme => ({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center'
-    }
+    },
 });
 
 class Login extends React.Component {
@@ -55,8 +59,21 @@ class Login extends React.Component {
         };
     }
 
+    componentDidMount() {
+        if(!!this.props.username) {
+            history.push('/dashboard')
+        }
+    }
+
     handleChange = name => event => {
         this.setState({[name]: event.target.value});
+    };
+
+    handleSubmit = () => {
+        const {username, password} = this.state;
+        if (this.state.username && this.state.password) {
+            this.props.login(username, password);
+        }
     };
 
     render() {
@@ -74,6 +91,7 @@ class Login extends React.Component {
                             value={this.state.username}
                             onChange={this.handleChange('username')}
                             margin="normal"
+                            onKeyPress={e => (e.key === 'Enter') ? this.handleSubmit() : null}
                         />
 
                         <TextField
@@ -82,14 +100,17 @@ class Login extends React.Component {
                             className={classes.textField}
                             type={"password"}
                             autoComplete={"current-password"}
+                            onChange={this.handleChange('password')}
                             margin={"normal"}
+                            onKeyPress={e => (e.key === 'Enter') ? this.handleSubmit() : null}
                         />
 
 
                         <div className={classes.loginGroup}>
                             <Button variant="contained" color={"primary"}
-                                    className={classes.button} component={Link} to="/dashboard">Login</Button>
-                            <Typography variant={"body1"} className={classes.loginLink}>or <Link to={"/register"}>register</Link></Typography>
+                                    className={classes.button} onClick={this.handleSubmit}>Login</Button>
+                            <Typography variant={"body1"} className={classes.loginLink}>or <Link
+                                to={"/register"}>register</Link></Typography>
                         </div>
                     </form>
                 </Paper>
@@ -102,4 +123,12 @@ Login.propTypes = {
     classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(Login);
+const mapStateToProps = state => {
+    return {
+        username: state.user.username,
+        password: state.user.password,
+        error: state.user.logInError
+    }
+};
+
+export default connect(mapStateToProps, {setUserInformation, login, clearError})(withStyles(styles)(Login));

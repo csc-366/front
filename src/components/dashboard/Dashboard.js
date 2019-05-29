@@ -3,6 +3,7 @@ import ObservationTable from "../common/table/ObservationTable";
 import {withStyles} from '@material-ui/core/styles';
 import defaultStyles from '../../defaultStyles';
 import PropTypes from 'prop-types'
+import Header from "../common/Header";
 
 const styles = theme => {
     return {
@@ -33,11 +34,14 @@ class Dashboard extends React.Component {
     render() {
         const {classes} = this.props;
         return (
-            <div className="dashboard">
-                <div className={classes.singlePageContent}>
-                    <ObservationTable/>
+            <>
+                <Header/>
+                <div className="dashboard">
+                    <div className={classes.singlePageContent}>
+                        <ObservationTable/>
+                    </div>
                 </div>
-            </div>
+            </>
         )
     }
 }

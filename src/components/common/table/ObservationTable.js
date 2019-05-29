@@ -13,7 +13,7 @@ import ObservationTableHead from './ObservationTableHead';
 import ObservationTableToolbar from './ObservationTableToolbar';
 import MarkChip from "./MarkChip";
 import TagChip from "./TagChip";
-import ObservationDetailsDialog from "../../details/ObservationDetailsDialog";
+import ObservationDetailsModal from "../../details/ObservationDetailsModal";
 
 
 const styles = theme => ({
@@ -236,7 +236,7 @@ class ObservationTable extends React.Component {
                         onChangeRowsPerPage={this.handleChangeRowsPerPage}
                     />
                 </Paper>
-                <ObservationDetailsDialog open={this.state.openDetails} observationId={this.state.observationId}/>
+                <ObservationDetailsModal open={this.state.openDetails} observationId={this.state.observationId}/>
             </>
         );
     }

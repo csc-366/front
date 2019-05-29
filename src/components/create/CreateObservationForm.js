@@ -2,8 +2,7 @@ import React from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
 import defaultStyles from '../../defaultStyles';
-import {reduxForm, formValueSelector} from 'redux-form';
-import {connect} from 'react-redux';
+import {reduxForm} from 'redux-form';
 import PropTypes from 'prop-types';
 import DateField from "./DateField";
 import FieldLeaderArray from "./fieldLeaders/FieldLeaderArray";
@@ -13,8 +12,7 @@ import SelectField from "./SelectField";
 import TextField from '@material-ui/core/TextField'
 import {Field} from 'redux-form';
 import MeasurementManager from "./measurements/MeasurementManager";
-import Button from '@material-ui/core/Button'
-import {setObservationDate, setFormData} from "../../actions/createObservation";
+import AddImageField from "./AddImageField";
 
 const styles = theme => ({
     ...defaultStyles(theme),
@@ -37,7 +35,7 @@ class CreateObservationForm extends React.Component {
         return Object.entries(ageClasses);
     };
 
-    renderTextField = ({input: {onChange, value}, classes, label, name, multiline = false, type = 'text', fullWidth=false}) => {
+    renderTextField = ({input: {onChange, value}, classes, label, name, multiline = false, type = 'text', fullWidth = false}) => {
         return (
             <TextField
                 id={name}
@@ -52,31 +50,11 @@ class CreateObservationForm extends React.Component {
         )
     };
 
-    renderImageField = ({input: {onChange, value}, classes, label, name}) => {
-        return (
-            <>
-                <input accept={"image/*"}
-                       className={classes.input}
-                       id={name}
-                       multiple
-                       type={"file"}
-                       onChange={e => onChange(e.target.files)}
-                       value={value}
-                />
-                <label htmlFor={name}>
-                    <Button variant={"contained"} component={"span"} className={classes.button}>
-                        {label}
-                    </Button>
-                </label>
-            </>
-        )
-    };
-
     render() {
         const {ageClass, sex, classes} = this.props;
         return (
             <form>
-                <DateField/>
+                <DateField />
                 <SelectField label={"Location"} name={"location"}
                              values={Object.entries({
                                  ACL: "ACL",
@@ -126,7 +104,7 @@ class CreateObservationForm extends React.Component {
                 <Field component={this.renderTextField} name={'comments'} classes={classes} multiline={true}
                        label={"Comments"} fullWidth={true}/>
 
-                <Field component={this.renderImageField} name={"images"} classes={classes} label={"Add Images"}/>
+                <AddImageField/>
             </form>
         )
     }
@@ -140,21 +118,8 @@ CreateObservationForm.propTypes = {
 };
 
 const form = reduxForm({
-    form: 'createObservationForm'
+    form: 'createObservationForm',
+    destroyOnUnmount: false
 })(withStyles(styles)(CreateObservationForm));
 
-const selector = formValueSelector('createObservationForm');
-
-const mapStateToProps = state => {
-    const ageClass = selector(state, 'ageClass');
-    const sex = selector(state, 'sex');
-
-    return {
-        ageClass,
-        sex,
-        observationData: state.observationData,
-        formData: state.form.observationData
-    }
-};
-
-export default connect(mapStateToProps, {setObservationDate, setFormData})(form);
+export default form;
