@@ -23,7 +23,7 @@ const styles = theme => ({
     }
 });
 
-class ObservationDetailsDialog extends React.Component {
+class ObservationDetailsModal extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -127,10 +127,10 @@ class ObservationDetailsDialog extends React.Component {
     }
 }
 
-ObservationDetailsDialog.propTypes = {
+ObservationDetailsModal.propTypes = {
     classes: PropTypes.object.isRequired,
     open: PropTypes.bool.isRequired,
     observationId: PropTypes.number.isRequired
 };
 
-export default withStyles(styles)(ObservationDetailsDialog);
+export default withStyles(styles)(ObservationDetailsModal);

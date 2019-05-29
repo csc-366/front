@@ -62,11 +62,6 @@ class CreateObservationStepper extends React.Component {
         });
     };
 
-    componentDidUpdate() {
-        const {setFormData, formData} = this.props;
-        setFormData(formData)
-    }
-
     getStepContent = (stepIndex) => {
         switch (stepIndex) {
             case 0:

@@ -1,8 +1,14 @@
 import {combineReducers} from 'redux';
 import {reducer as formReducer} from 'redux-form';
-import {createObservationReducer} from "../reducers/createObservation";
+import {adminReducer} from "./admin";
+import {userReducer} from "./user";
+import {errorReducer} from "./error";
+import {purgeReducer} from "./purge";
 
 export default combineReducers({
     form: formReducer,
-    observationData: createObservationReducer
+    admin: adminReducer,
+    user: userReducer,
+    error: errorReducer,
+    purge: purgeReducer
 })

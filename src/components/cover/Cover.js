@@ -5,6 +5,8 @@ import {withStyles} from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import {connect} from 'react-redux';
+import history from "../../history";
 
 const styles = theme => ({
     root: {
@@ -34,6 +36,11 @@ const styles = theme => ({
 });
 
 class Cover extends React.Component {
+    componentDidMount() {
+        if(this.props.isLoggedIn) {
+            history.replace('/dashboard')
+        }
+    }
 
     render() {
         const {classes} = this.props;
@@ -61,4 +68,10 @@ Cover.propTypes = {
     classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(Cover);
+const mapStateToProps = state => {
+    return {
+        isLoggedIn: !!state.user.username
+    }
+};
+
+export default connect(mapStateToProps)(withStyles(styles)(Cover));
