@@ -12,7 +12,7 @@ export const getAllUsers = () => async (dispatch) => {
     } catch (e) {
         dispatch({
             type: ERROR,
-            payload: {message: e.response}
+            payload: {message: e.response.data.message}
         })
     }
 };

@@ -19,6 +19,17 @@ const styles = theme => ({
 });
 
 class CreateObservationForm extends React.Component {
+    componentDidMount() {
+        if (!this.props.formOptions.locations) {
+            this.props.getLocations();
+        }
+        if (!this.props.formOptions.positions) {
+            this.props.getPositions();
+        }
+        if(!this.props.formOptions.colors) {
+            this.props.getColors();
+        }
+    }
     ageClassValues = (sex) => {
         let ageClasses = {
             P: "Pup",
@@ -56,24 +67,7 @@ class CreateObservationForm extends React.Component {
             <form>
                 <DateField />
                 <SelectField label={"Location"} name={"location"}
-                             values={Object.entries({
-                                 ACL: "ACL",
-                                 ACU: "ACU",
-                                 ALL: "ALL",
-                                 ALLn: "ALLn",
-                                 ALLs: "ALLs",
-                                 ALU: "ALU",
-                                 DCC: "DCC",
-                                 DCL: "DCL",
-                                 DCU: "DCU",
-                                 LTC: "LTC",
-                                 LTL: "LTL",
-                                 LTU: "LTU",
-                                 VAFB: "VAFB",
-                                 VP3DC: "VP3DC",
-                                 VP3L: "VP3L",
-                                 VP3U: "VP3U"
-                             })}/>
+                             values={Object.entries(this.props.formOptions.locations)}/>
                 <FieldLeaderArray/>
                 <Divider style={{marginTop: 8, marginBottom: 8}}/>
                 <MarkManager count={0}/>

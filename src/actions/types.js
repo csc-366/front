@@ -14,3 +14,7 @@ export const ERROR = "ERROR";
 export const CLEAR_ERROR = "CLEAR_ERROR";
 
 export const PURGE = "PURGE";
+
+export const GET_LOCATIONS = "GET_LOCATIONS";
+export const GET_TAG_COLORS = "GET_TAG_COLORS";
+export const GET_TAG_POSITIONS = "GET_TAG_POSITIONS";
