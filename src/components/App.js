@@ -51,7 +51,7 @@ class App extends React.Component {
                     <Route path="/" exact component={Cover}/>
                     <Route path="/login" component={Login}/>
                     <Route path="/register" component={Register}/>
-                    {this.mapDebugRoutes()}
+                    {/*this.mapDebugRoutes()*/}
                     {this.mapPrivilegedRoutes()}
                     {this.mapAdminRoutes()}
                 </Router>

@@ -6,6 +6,7 @@ import {
 } from "./types";
 import {backend} from "../apis/backend";
 import history from '../history';
+import {camelCaseObject} from "../util/db";
 
 export const setUserInformation = (userInformation) => {
     return {
@@ -21,10 +22,7 @@ export const login = (username, password) => async (dispatch) => {
     const userAccount = {username, password};
 
     try {
-        let response = (await backend.post('/sessions/login', userAccount)).data.data;
-        response = Object.entries(response).map(([key, value]) => {
-            return [key.replace(/^([A-Z])(.+)/, ((match, p1, p2) => `${p1.toLowerCase()}${p2}`)), value]
-        }).reduce((agg, [key,value]) => { return {...agg, [key]: value}},{});
+        const response = camelCaseObject((await backend.post('/sessions/login', userAccount)).data.data);
         dispatch({
             type: LOG_IN,
             payload: {
@@ -52,14 +50,14 @@ export const register = (firstName, lastName, email, username, password, confirm
     const userAccount = {firstName, lastName, email, username, password, confirmPassword};
 
     try {
-        const response = await backend.post('/users/register', {
+        const response = camelCaseObject((await backend.post('/users/register', {
             ...userAccount,
             role: 'Citizen Scientist'
-        });
+        })).data.data);
         dispatch({
             type: REGISTER,
             payload: {
-                user: response.data.data
+                user: response
             }
         })
     } catch (e) {

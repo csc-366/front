@@ -2,8 +2,7 @@ import React from 'react';
 import defaultStyles from "../../defaultStyles";
 import {withStyles} from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import {connect} from 'react-redux';
-import {purgeStore} from "../../actions/purge";
+import history from '../../history';
 
 const styles = theme => ({
     ...defaultStyles(theme),
@@ -15,15 +14,23 @@ const styles = theme => ({
     }
 });
 
-const Purge = (props) => {
-    const {classes, persistor, purgeStore} = props;
-    purgeStore(persistor);
+class Purge extends React.Component {
+    async componentDidMount() {
+        const {persistor} = this.props;
+        await persistor.purge();
+        await persistor.flush();
+        await persistor.pause();
+        history.replace('/');
+    }
 
-    return (
-        <div className={classes.root}>
-            <CircularProgress className={classes.progress} />
-        </div>
-    )
-};
+    render() {
+        const {classes} = this.props;
+        return (
+            <div className={classes.root}>
+                <CircularProgress className={classes.progress}/>
+            </div>
+        )
+    }
+}
 
-export default connect(null, {purgeStore})(withStyles(styles)(Purge));
+export default withStyles(styles)(Purge);

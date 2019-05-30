@@ -12,6 +12,7 @@ import Paper from '@material-ui/core/Paper';
 import {setManagedUser, getAllUsers} from "../../actions/admin";
 import {connect} from 'react-redux';
 import ManageUserModal from "./ManageUserModal";
+import history from "../../history";
 
 const styles = theme => ({
     ...defaultStyles(theme),
@@ -46,6 +47,9 @@ const rows = [
 
 class ManageUsers extends React.Component {
     componentDidMount() {
+        if (!this.props.isLoggedIn) {
+            history.replace('/');
+        }
         this.props.getAllUsers();
     }
 
@@ -55,15 +59,16 @@ class ManageUsers extends React.Component {
 
     renderTableRow = (row) => {
         return (
-            <TableRow key={row.name} hover onClick={
+            <TableRow key={row.username} hover onClick={
                 this.setManagedUser(row)
             }>
                 <TableCell component="th" scope="row">
-                    {row.name}
+                    {`${row.firstName} ${row.lastName}`}
                 </TableCell>
-                <TableCell align="right">{row.affiliation}</TableCell>
+                <TableCell align="right">{row.affiliation ? row.affiliation : 'None'}</TableCell>
                 <TableCell align="right">{row.email}</TableCell>
                 <TableCell align="right">{row.username}</TableCell>
+                <TableCell align="right">{row.role}</TableCell>
                 <TableCell align="right">{row.lastActive}</TableCell>
             </TableRow>
         )
@@ -83,11 +88,12 @@ class ManageUsers extends React.Component {
                             <TableCell align="right">Affiliation</TableCell>
                             <TableCell align="right">Email</TableCell>
                             <TableCell align="right">Username</TableCell>
+                            <TableCell align="right">Role</TableCell>
                             <TableCell align="right">Last Active</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {rows.map(row => this.renderTableRow(row))}
+                        {this.props.users.map(row => this.renderTableRow(row))}
                     </TableBody>
                 </Table>
             </Paper>
@@ -105,4 +111,11 @@ class ManageUsers extends React.Component {
     }
 }
 
-export default connect(null, {setManagedUser, getAllUsers})(withStyles(styles)(ManageUsers));
+const mapStateToProps = state => {
+    return {
+        users: state.admin.users,
+        isLoggedIn: !!state.user.username
+    }
+};
+
+export default connect(mapStateToProps, {setManagedUser, getAllUsers})(withStyles(styles)(ManageUsers));
