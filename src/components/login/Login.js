@@ -89,7 +89,6 @@ class Login extends React.Component {
             <div className={classes.root}>
                 <Paper className={classes.paper}>
                     <Typography variant="h2">Sign In</Typography>
-                    {/*TODO: Hook up redux form - https://github.com/erikras/redux-form-material-ui*/}
                     <form className={classes.formContainer} noValidate autoComplete="off">
                         <TextField
                             id="username"

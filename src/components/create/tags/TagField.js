@@ -37,7 +37,7 @@ class TagField extends React.Component {
                         onChange={() => onChange(!value)}
                     />
                 }
-                label="New Mark?"
+                label="New Tag?"
             />
         );
     };

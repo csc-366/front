@@ -40,7 +40,8 @@ export const login = (username, password) => async (dispatch) => {
     }
 };
 
-export const logout = () => {
+export const logout = () => async (dispatch) => {
+    await backend.post('/')
     return {
         type: LOG_OUT
     }
@@ -59,13 +60,10 @@ export const register = (firstName, lastName, email, username, password, confirm
             payload: {
                 user: response
             }
-        })
+        });
+        history.push('/dashboard')
     } catch (e) {
-        let response = e.response.data.message;
-        console.log(typeof response);
-        if (typeof response === Array) {
-            response = response.map(item => `${item.param} ${item.msg}`).join('\n')
-        }
+        const response = e.response.data.message;
         console.log(response);
         dispatch({
             type: ERROR,

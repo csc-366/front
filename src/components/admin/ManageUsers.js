@@ -69,7 +69,7 @@ class ManageUsers extends React.Component {
                 <TableCell align="right">{row.email}</TableCell>
                 <TableCell align="right">{row.username}</TableCell>
                 <TableCell align="right">{row.role}</TableCell>
-                <TableCell align="right">{row.lastActive}</TableCell>
+                <TableCell align="right">{row.status}</TableCell>
             </TableRow>
         )
     };
@@ -89,7 +89,7 @@ class ManageUsers extends React.Component {
                             <TableCell align="right">Email</TableCell>
                             <TableCell align="right">Username</TableCell>
                             <TableCell align="right">Role</TableCell>
-                            <TableCell align="right">Last Active</TableCell>
+                            <TableCell align="right">Account Status</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>

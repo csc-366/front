@@ -11,7 +11,6 @@ import {connect} from 'react-redux';
 import "./App.css";
 import ManageUsers from "./admin/ManageUsers";
 import ErrorSnackbar from "./common/ErrorSnackbar";
-import Purge from "./purge/Purge";
 
 class App extends React.Component {
     mapPrivilegedRoutes = () => {
@@ -35,14 +34,6 @@ class App extends React.Component {
         return null
     };
 
-    mapDebugRoutes = () => {
-        if (process.env.REACT_APP_PURGE) {
-            return (
-                <Route path="/purge" exact component={() => <Purge persistor={this.props.persistor}/>}/>
-            )
-        }
-    };
-
     render() {
         return (
             <React.Fragment>
@@ -51,7 +42,6 @@ class App extends React.Component {
                     <Route path="/" exact component={Cover}/>
                     <Route path="/login" component={Login}/>
                     <Route path="/register" component={Register}/>
-                    {/*this.mapDebugRoutes()*/}
                     {this.mapPrivilegedRoutes()}
                     {this.mapAdminRoutes()}
                 </Router>
