@@ -6,6 +6,5 @@ export const purgeStore = (persistor) => async dispatch => {
     history.push('/');
     dispatch({
         type: PURGE,
-        payload: success
     })
 };

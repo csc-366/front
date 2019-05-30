@@ -1,7 +1,8 @@
-import {SET_MANAGED_USER} from "../actions/types";
+import {GET_ALL_USERS, PURGE, SET_MANAGED_USER} from "../actions/types";
 
 const initialState = {
-    managedUser: null
+    managedUser: null,
+    users: []
 };
 
 export function adminReducer(state=initialState, action) {
@@ -11,6 +12,13 @@ export function adminReducer(state=initialState, action) {
                 ...state,
                 managedUser: action.payload.managedUser
             };
+        case GET_ALL_USERS:
+            return {
+                ...state,
+                users: action.payload.users
+            };
+        case PURGE:
+            return initialState;
         default:
             return state;
     }

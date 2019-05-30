@@ -76,6 +76,13 @@ class Login extends React.Component {
         }
     };
 
+    onKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            this.handleSubmit()
+        }
+    };
+
     render() {
         const {classes} = this.props;
         return (
@@ -91,7 +98,7 @@ class Login extends React.Component {
                             value={this.state.username}
                             onChange={this.handleChange('username')}
                             margin="normal"
-                            onKeyPress={e => (e.key === 'Enter') ? this.handleSubmit() : null}
+                            onKeyPress={this.onKeyPress}
                         />
 
                         <TextField
@@ -102,7 +109,7 @@ class Login extends React.Component {
                             autoComplete={"current-password"}
                             onChange={this.handleChange('password')}
                             margin={"normal"}
-                            onKeyPress={e => (e.key === 'Enter') ? this.handleSubmit() : null}
+                            onKeyPress={this.onKeyPress}
                         />
 
 
