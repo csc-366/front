@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -7,6 +7,9 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import CreateModalButton from "../create/CreateObservationDialog";
+import ImportModalButton from '../import/ImportObservationDialog';
+import {logout} from "../../actions/user";
+import {connect} from 'react-redux';
 
 const styles = {
     root: {
@@ -25,29 +28,56 @@ const styles = {
     }
 };
 
-const Header = (props) => {
-    const {classes} = props;
-    return (
-        <div className={classes.root}>
-            <AppBar position={"static"}>
-                <Toolbar>
-                    <Link to={'/'} className={[classes.link, classes.grow].join(' ')}>
-                        <Typography variant={"h6"} color={"inherit"}>
-                            SeaQL
-                        </Typography>
-                    </Link>
-                    <CreateModalButton/>
-                    <Button color={"inherit"} component={Link} to="/dashboard">Dashboard</Button>
-                    <Button color={"inherit"} component={Link} to="/account">Account</Button>
-                    <Button color={"inherit"}>Logout</Button>
-                </Toolbar>
-            </AppBar>
-        </div>
-    );
+class Header extends React.Component {
+    logout = () => {
+        this.props.logout();
+    };
+
+    renderAdminFunctions = () => {
+        const {user} = this.props;
+        if (user && user.role === 'Admin') {
+            return (
+                <>
+                    <Button color={"inherit"} component={Link} to="/manage_users">Manage Users</Button>
+                    <Button color={"inherit"} component={Link} to="/admin">Adminstration</Button>
+                </>
+            )
+        }
+        return null;
+    };
+
+    render() {
+        const {classes} = this.props;
+        return (
+            <div className={classes.root}>
+                <AppBar position={"static"}>
+                    <Toolbar>
+                        <Link to={'/'} className={[classes.link, classes.grow].join(' ')}>
+                            <Typography variant={"h6"} color={"inherit"}>
+                                SeaQL
+                            </Typography>
+                        </Link>
+                        <ImportModalButton/>
+                        <CreateModalButton/>
+                        <Button color={"inherit"} component={Link} to="/dashboard">Dashboard</Button>
+                        {this.renderAdminFunctions()}
+                        <Button color={"inherit"} component={Link} to="/account">Account</Button>
+                        <Button color={"inherit"} onClick={this.logout}>Logout</Button>
+                    </Toolbar>
+                </AppBar>
+            </div>
+        );
+    }
 };
 
 Header.propTypes = {
     classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(Header);
+const mapStateToProps = state => {
+    return {
+        user: state.user
+    }
+};
+
+export default connect(mapStateToProps, {logout})(withStyles(styles)(Header));

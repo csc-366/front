@@ -10,6 +10,7 @@ import EditInfoButton from "./EditInfoButton";
 import LogTable from "./LogTable";
 import Grid from "@material-ui/core/Grid";
 import Switch from "@material-ui/core/Switch";
+import Header from "../common/Header";
 
 const styles = theme => ({
     root: {
@@ -118,6 +119,8 @@ class Account extends React.Component {
         ];
 
         return (
+            <>
+                <Header/>
             <React.Fragment>
                 <div className={classes.root}>
                     <Grid container spacing={24}>
@@ -175,6 +178,7 @@ class Account extends React.Component {
                 </div>
                 <LogTable/>
             </React.Fragment>
+                </>
         );
     }
 }

@@ -1,27 +1,60 @@
 import React from 'react';
-import {BrowserRouter as Router, Route} from 'react-router-dom';
+import {Router, Route} from 'react-router-dom';
 import Cover from './cover/Cover';
 import Login from './login/Login';
 import Dashboard from './dashboard/Dashboard';
-import Header from './common/Header'
 import Register from './register/Register';
 import Account from './account/Account';
+import history from '../history';
+import {connect} from 'react-redux';
 
 import "./App.css";
+import ManageUsers from "./admin/ManageUsers";
+import ErrorSnackbar from "./common/ErrorSnackbar";
 
-const App = () => {
-    return (
-        <React.Fragment>
-            <Router>
-                <Header />
-                <Route path="/" exact component={Cover}/>
-                <Route path="/login" component={Login}/>
-                <Route path="/register" component={Register}/>
-                <Route path="/dashboard" component={Dashboard}/>
-                <Route path="/account" component={Account}/>
-            </Router>
-        </React.Fragment>
-    )
+class App extends React.Component {
+    mapPrivilegedRoutes = () => {
+        if (this.props.isLoggedIn) {
+            return (
+                <>
+                    <Route path="/dashboard" component={Dashboard}/>
+                    <Route path="/account" component={Account}/>
+                </>
+            )
+        }
+        return null
+    };
+
+    mapAdminRoutes = () => {
+        if (this.props.isLoggedIn && this.props.role === 'Admin') {
+            return (
+                <Route path="/manage_users" component={ManageUsers}/>
+            )
+        }
+        return null
+    };
+
+    render() {
+        return (
+            <React.Fragment>
+                <ErrorSnackbar/>
+                <Router history={history}>
+                    <Route path="/" exact component={Cover}/>
+                    <Route path="/login" component={Login}/>
+                    <Route path="/register" component={Register}/>
+                    {this.mapPrivilegedRoutes()}
+                    {this.mapAdminRoutes()}
+                </Router>
+            </React.Fragment>
+        )
+    }
+}
+
+const mapStateToProps = state => {
+    return {
+        isLoggedIn: !!state.user.username,
+        role: state.user.role
+    }
 };
 
-export default App;
+export default connect(mapStateToProps)(App);
