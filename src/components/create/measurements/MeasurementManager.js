@@ -36,26 +36,38 @@ class MeasurementManager extends React.Component {
     addMeasurement = () => {this.setState({count: this.state.count + 1})};
     removeMeasurement = () => {this.setState({count: (this.state.count === 0) ? 0 : this.state.count - 1})};
 
+    renderAddRemoveMeasurement = () => {
+        const {classes} = this.props;
+        if (this.state.count === 1) {
+            return (
+                <Button
+                    color={"secondary"}
+                    onClick={this.removeMeasurement}
+                    className={classes.button}
+                >
+                    Remove Measurement
+                </Button>
+            )
+        } else {
+            return (
+                <Button
+                    color={"primary"}
+                    onClick={this.addMeasurement}
+                    className={classes.button}
+                >
+                    Add Measurement
+                </Button>
+            )
+        }
+    };
+
     render() {
         const {classes} = this.props;
         return (
             <div className={classes.formColumn}>
                 <FieldArray name={"measurements"} component={this.renderFields(this.state.count)}/>
                 <div className={classes.formRow}>
-                    <Button
-                        color={"primary"}
-                        onClick={this.addMeasurement}
-                        className={classes.button}
-                    >
-                        Add Measurement
-                    </Button>
-                    <Button
-                        color={"secondary"}
-                        onClick={this.removeMeasurement}
-                        className={classes.button}
-                    >
-                        Remove Measurement
-                    </Button>
+                    {this.renderAddRemoveMeasurement()}
                 </div>
             </div>
         )

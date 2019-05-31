@@ -32,7 +32,7 @@ class TagManager extends React.Component {
         return fields.map((field, index) => {
             return (<TagField key={index} name={`${field}`}/>)
         });
-    }
+    };
 
     render() {
         const {classes} = this.props;

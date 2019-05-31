@@ -6,6 +6,14 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import {register} from "../../actions/user";
+import {clearError} from "../../actions/error";
+import {connect} from 'react-redux';
+import Icon from '@material-ui/core/Icon';
+import Snackbar from '@material-ui/core/Snackbar';
+import IconButton from '@material-ui/core/IconButton';
+import SnackbarContent from '@material-ui/core/SnackbarContent';
+import history from "../../history";
 
 const styles = theme => ({
     root: {
@@ -43,6 +51,17 @@ const styles = theme => ({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center'
+    },
+    error: {
+        backgroundColor: 'red'
+    },
+    errorMessage: {
+        display: 'flex',
+        flexDirection: 'row',
+    },
+    errorText: {
+        color: 'white',
+        paddingLeft: theme.spacing.unit
     }
 });
 
@@ -59,14 +78,54 @@ class Register extends React.Component {
         };
     }
 
+    componentDidMount() {
+        if (!!this.props.username) {
+            history.push('/dashboard')
+        }
+    }
+
     handleChange = name => event => {
         this.setState({[name]: event.target.value});
+    };
+
+    handleSubmit = () => {
+        const {firstName, lastName, email, username, password, confirmPassword} = this.state;
+        this.props.register(firstName, lastName, email, username, password, confirmPassword);
+    };
+
+    onSnackbarClose = () => {
+        this.props.clearError()
     };
 
     render() {
         const {classes} = this.props;
         return (
             <div className={classes.root}>
+                <Snackbar
+                    open={!!this.props.error}
+                    anchorOrigin={{
+                        vertical: "top",
+                        horizontal: "center"
+                    }}
+                    autoHideDuration={6000}
+                    onClose={this.onSnackbarClose}
+                >
+                    <SnackbarContent
+                        className={classes.error}
+                        aria-describedby={"client-snackbar"}
+                        message={
+                            <span id={"client-snackbar"} className={classes.errorMessage}>
+                                <Icon>error</Icon>
+                                <Typography variant="subtitle1" className={classes.errorText}>{this.props.error}</Typography>
+                            </span>
+                        }
+                        action={
+                            <IconButton key={"close"} aria-label={"Close"} color={"inherit"} onClick={this.onSnackbarClose}>
+                                <Icon>close</Icon>
+                            </IconButton>
+                        }
+                    />
+                </Snackbar>
                 <Paper className={classes.paper}>
                     <Typography variant="h2">Register</Typography>
                     {/*TODO: Hook up redux form - https://github.com/erikras/redux-form-material-ui*/}
@@ -113,22 +172,27 @@ class Register extends React.Component {
                             className={classes.textField}
                             type={"password"}
                             autoComplete={"current-password"}
+                            onChange={this.handleChange('password')}
                             margin={"normal"}
+                            onKeyPress={e => (e.key === 'Enter') ? this.handleSubmit() : null}
                         />
 
                         <TextField
                             id={"confirmPassword"}
                             label={"Confirm Password"}
                             className={classes.textField}
+                            type={"password"}
                             value={this.state.confirmPassword}
                             onChange={this.handleChange('confirmPassword')}
                             margin={"normal"}
+                            onKeyPress={e => (e.key === 'Enter') ? this.handleSubmit() : null}
                         />
 
                         <div className={classes.loginGroup}>
                             <Button variant="contained" color={"primary"}
-                                    className={classes.button} component={Link} to="/dashboard">Register</Button>
-                            <Typography variant={"body1"} className={classes.loginLink}>or <Link to={"/login"}>log in</Link></Typography>
+                                    className={classes.button} onClick={this.handleSubmit}>Register</Button>
+                            <Typography variant={"body1"} className={classes.loginLink}>or <Link to={"/login"}>log
+                                in</Link></Typography>
                         </div>
                     </form>
                 </Paper>
@@ -141,4 +205,12 @@ Register.propTypes = {
     classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(Register);
+const mapStateToProps = state => {
+    return {
+        username: state.user.username,
+        password: state.user.password,
+        error: state.user.registerError
+    }
+};
+
+export default connect(mapStateToProps, {register, clearError})(withStyles(styles)(Register));
