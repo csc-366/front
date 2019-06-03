@@ -33,18 +33,6 @@ const styles = theme => ({
     }
 });
 
-const createData = (name, affiliation, email, username, lastActive) => {
-    return {name, affiliation, email, username, lastActive};
-};
-
-const rows = [
-    createData('Mai T. Bunker', 'Researcher', 'MaiTBunker@dayrep.com', 'Hispossiond', new Date('07-12-2019').toISOString()),
-    createData('Esther J. Barnett', 'Volunteer', 'EstherJBarnett@armyspy.com', 'Criongul', new Date('07-12-2019').toISOString()),
-    createData('Malcolm R. Connolly', 'Volunteer', 'MalcolmRConnolly@dayrep.com', 'Frarte', new Date('07-12-2019').toISOString()),
-    createData('Brandon A. Estepp', 'Researcher', 'BrandonAEstepp@jourrapide.com', 'Dionsiouseve', new Date('07-12-2019').toISOString()),
-    createData('Donna B. Simon', 'Volunteer', 'DonnaBSimon@jourrapide.com', 'Hawas1981', new Date('07-12-2019').toISOString()),
-];
-
 class ManageUsers extends React.Component {
     componentDidMount() {
         if (!this.props.isLoggedIn) {
