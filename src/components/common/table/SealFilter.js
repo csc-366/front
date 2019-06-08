@@ -10,6 +10,8 @@ import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import ListItemText from "@material-ui/core/ListItemText";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
+import SealFilterTag from "./SealFilterTag";
+import Button from "@material-ui/core/Button";
 
 const styles = theme => ({
   header: {
@@ -26,6 +28,11 @@ const styles = theme => ({
     marginLeft: theme.spacing.unit,
     minWidth: 180,
     maxWidth: 180
+  },
+  button: {
+    marginLeft: theme.spacing.unit * 3,
+    marginTop: theme.spacing.unit,
+    marginBottom: theme.spacing.unit
   }
 });
 
@@ -33,19 +40,13 @@ class SealFilter extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      open: false,
       name: "",
       markNumber: "",
       markPosition: [],
       markDateStart: "",
       markDateEnd: "",
-      tagNumber: "",
-      tagSide: "",
-      tagColor: "",
-      tagLocation: "",
-      tagSpike: "",
-      tagDateStart: "",
-      tagDateEnd: "",
+      tags: {},
+      tagIndex: 0,
       sex: "",
       dateStart: "",
       dateEnd: "",
@@ -66,8 +67,51 @@ class SealFilter extends React.Component {
     });
   };
 
+  addTag = () => {
+    let newTags = this.state.tags;
+
+    newTags[(this.state.tagIndex + 1).toString()] = {
+      tagNumber: "",
+      tagSide: "",
+      tagColor: "",
+      tagLocation: "",
+      tagSpike: "",
+      tagDateStart: "",
+      tagDateEnd: ""
+    };
+
+    this.setState({
+      tagIndex: this.state.tagIndex + 1,
+      tags: newTags
+    });
+  };
+
+  removeTag = id => {
+    let newTags = this.state.tags;
+    delete newTags[id];
+
+    this.setState({
+      tags: newTags
+    });
+  };
+
   render() {
     const { classes } = this.props;
+
+    let tags = [];
+    const tagList = Object.keys(this.state.tags);
+
+    for (let i = 0; i < tagList.length; i++) {
+      tags.push(
+        <SealFilterTag
+          key={tagList[i]}
+          numTag={i + 1}
+          removeTag={() => {
+            this.removeTag(tagList[i]);
+          }}
+        />
+      );
+    }
 
     return (
       <List>
@@ -139,101 +183,15 @@ class SealFilter extends React.Component {
           </ListItemText>
         </ListItem>
         <Divider />
-        <ListItem>
-          <ListItemText>
-            <Typography className={classes.header} variant="subtitle2">
-              Tag 1
-            </Typography>
-            <TextField
-              label="Tag Number"
-              className={classes.textField}
-              value={this.state.tagNumber}
-              onChange={this.handleChange("tagNumber")}
-              variant="outlined"
-            />
-            <FormControl className={classes.formControl}>
-              <Select
-                value={this.state.tagColor}
-                onChange={this.handleChange("tagColor")}
-                input={<OutlinedInput labelWidth={0} />}
-                displayEmpty
-              >
-                <MenuItem value="">
-                  <i>Select Color</i>
-                </MenuItem>
-                <MenuItem value={"red"}>Red</MenuItem>
-                <MenuItem value={"green"}>Green</MenuItem>
-                <MenuItem value={"blue"}>Blue</MenuItem>
-              </Select>
-            </FormControl>
-            <FormControl className={classes.formControl}>
-              <Select
-                value={this.state.tagSide}
-                onChange={this.handleChange("tagSide")}
-                input={<OutlinedInput labelWidth={0} />}
-                displayEmpty
-              >
-                <MenuItem value="">
-                  <i>Select Side</i>
-                </MenuItem>
-                <MenuItem value={"left"}>Left</MenuItem>
-                <MenuItem value={"right"}>Right</MenuItem>
-              </Select>
-            </FormControl>
-            <FormControl className={classes.formControl}>
-              <Select
-                value={this.state.tagLocation}
-                onChange={this.handleChange("tagLocation")}
-                input={<OutlinedInput labelWidth={0} />}
-                displayEmpty
-              >
-                <MenuItem value="">
-                  <i>Select Location</i>
-                </MenuItem>
-                <MenuItem value={"1"}>1</MenuItem>
-                <MenuItem value={"2"}>2</MenuItem>
-                <MenuItem value={"3"}>3</MenuItem>
-                <MenuItem value={"4"}>4</MenuItem>
-              </Select>
-            </FormControl>
-            <FormControl className={classes.formControl}>
-              <Select
-                value={this.state.tagSpike}
-                onChange={this.handleChange("tagSpike")}
-                input={<OutlinedInput labelWidth={0} />}
-                displayEmpty
-              >
-                <MenuItem value="">
-                  <i>Select Spike</i>
-                </MenuItem>
-                <MenuItem value={"so"}>Spike Out</MenuItem>
-                <MenuItem value={"si"}>Spike In</MenuItem>
-              </Select>
-            </FormControl>
-            <TextField
-              label="Deploy Date Start"
-              type="date"
-              className={classes.textField}
-              onChange={this.handleChange("tagDateStart")}
-              value={this.state.tagDateStart}
-              variant="outlined"
-              InputLabelProps={{
-                shrink: true
-              }}
-            />
-            <TextField
-              label="Deploy Date End"
-              type="date"
-              className={classes.textField}
-              onChange={this.handleChange("tagDateEnd")}
-              value={this.state.tagDateEnd}
-              variant="outlined"
-              InputLabelProps={{
-                shrink: true
-              }}
-            />
-          </ListItemText>
-        </ListItem>
+        {tags}
+        <Button
+          className={classes.button}
+          variant="outlined"
+          color={"secondary"}
+          onClick={this.addTag}
+        >
+          Add Tag
+        </Button>
         <Divider />
         <ListItem>
           <ListItemText>
@@ -346,16 +304,16 @@ class SealFilter extends React.Component {
                 variant="outlined"
               />
             ) : null}
-              {this.state.sex === "female" && this.state.ageClass === "A" ? (
-                  <TextField
-                      label="Pup Count"
-                      className={classes.textField}
-                      value={this.state.pupCount}
-                      onChange={this.handleChange("pupCount")}
-                      type="number"
-                      variant="outlined"
-                  />
-              ) : null}
+            {this.state.sex === "female" && this.state.ageClass === "A" ? (
+              <TextField
+                label="Pup Count"
+                className={classes.textField}
+                value={this.state.pupCount}
+                onChange={this.handleChange("pupCount")}
+                type="number"
+                variant="outlined"
+              />
+            ) : null}
           </ListItemText>
         </ListItem>
         <Divider />
