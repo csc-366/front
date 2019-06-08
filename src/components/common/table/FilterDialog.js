@@ -71,7 +71,6 @@ class FilterDialog extends React.Component {
               <IconButton
                 edge="start"
                 onClick={this.handleClose}
-                aria-label="Close"
                 color="inherit"
               >
                 <CloseIcon />
@@ -92,7 +91,6 @@ class FilterDialog extends React.Component {
             variant="contained"
             color={this.state.filterSeals ? "secondary" : null}
             className={classes.button}
-            value={"bye"}
             onClick={() => this.toggleFilter(true)}
           >
             Seal
@@ -101,7 +99,6 @@ class FilterDialog extends React.Component {
             variant="contained"
             color={this.state.filterSeals ? null : "secondary"}
             className={classes.button}
-            value={"hello"}
             onClick={() => this.toggleFilter(false)}
           >
             Observation
