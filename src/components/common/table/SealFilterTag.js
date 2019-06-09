@@ -33,24 +33,11 @@ class SealFilterTag extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      tagNumber: "",
-      tagSide: "",
-      tagColor: "",
-      tagLocation: "",
-      tagSpike: "",
-      tagDateStart: "",
-      tagDateEnd: ""
     };
   }
 
-  handleChange = name => event => {
-    this.setState({
-      [name]: event.target.value
-    });
-  };
-
   render() {
-    const { classes } = this.props;
+    const { classes, handleChange, tag } = this.props;
 
     return (
       <React.Fragment>
@@ -62,14 +49,14 @@ class SealFilterTag extends React.Component {
             <TextField
               label="Tag Number"
               className={classes.textField}
-              value={this.state.tagNumber}
-              onChange={this.handleChange("tagNumber")}
+              value={tag.tagNumber}
+              onChange={handleChange("tagNumber")}
               variant="outlined"
             />
             <FormControl className={classes.formControl}>
               <Select
-                value={this.state.tagColor}
-                onChange={this.handleChange("tagColor")}
+                value={tag.tagColor}
+                onChange={handleChange("tagColor")}
                 input={<OutlinedInput labelWidth={0} />}
                 displayEmpty
               >
@@ -83,8 +70,8 @@ class SealFilterTag extends React.Component {
             </FormControl>
             <FormControl className={classes.formControl}>
               <Select
-                value={this.state.tagSide}
-                onChange={this.handleChange("tagSide")}
+                value={tag.tagSide}
+                onChange={handleChange("tagSide")}
                 input={<OutlinedInput labelWidth={0} />}
                 displayEmpty
               >
@@ -97,8 +84,8 @@ class SealFilterTag extends React.Component {
             </FormControl>
             <FormControl className={classes.formControl}>
               <Select
-                value={this.state.tagLocation}
-                onChange={this.handleChange("tagLocation")}
+                value={tag.tagLocation}
+                onChange={handleChange("tagLocation")}
                 input={<OutlinedInput labelWidth={0} />}
                 displayEmpty
               >
@@ -113,8 +100,8 @@ class SealFilterTag extends React.Component {
             </FormControl>
             <FormControl className={classes.formControl}>
               <Select
-                value={this.state.tagSpike}
-                onChange={this.handleChange("tagSpike")}
+                value={tag.tagSpike}
+                onChange={handleChange("tagSpike")}
                 input={<OutlinedInput labelWidth={0} />}
                 displayEmpty
               >
@@ -129,8 +116,8 @@ class SealFilterTag extends React.Component {
               label="Deploy Date Start"
               type="date"
               className={classes.textField}
-              onChange={this.handleChange("tagDateStart")}
-              value={this.state.tagDateStart}
+              onChange={handleChange("tagDateStart")}
+              value={tag.tagDateStart}
               variant="outlined"
               InputLabelProps={{
                 shrink: true
@@ -140,8 +127,8 @@ class SealFilterTag extends React.Component {
               label="Deploy Date End"
               type="date"
               className={classes.textField}
-              onChange={this.handleChange("tagDateEnd")}
-              value={this.state.tagDateEnd}
+              onChange={handleChange("tagDateEnd")}
+              value={tag.tagDateEnd}
               variant="outlined"
               InputLabelProps={{
                 shrink: true
