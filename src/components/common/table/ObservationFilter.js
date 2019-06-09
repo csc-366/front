@@ -10,6 +10,8 @@ import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import ListItemText from "@material-ui/core/ListItemText";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
+import SealFilterFieldLeader from "./SealFilterFieldLeader";
+import Button from "@material-ui/core/Button";
 
 const styles = theme => ({
   header: {
@@ -26,6 +28,11 @@ const styles = theme => ({
     marginLeft: theme.spacing.unit,
     minWidth: 180,
     maxWidth: 180
+  },
+  button: {
+    marginLeft: theme.spacing.unit * 3,
+    marginTop: theme.spacing.unit,
+    marginBottom: theme.spacing.unit
   }
 });
 
@@ -38,7 +45,8 @@ class SealFilter extends React.Component {
       dateEnd: "",
       location: "",
       recorder: "",
-      fieldLeader: "",
+      fieldLeaderIndex: 0,
+      fieldLeaders: {},
       sex: "",
       ageClass: "",
       ageDays: "",
@@ -54,8 +62,55 @@ class SealFilter extends React.Component {
     });
   };
 
+  removeItem = name => id => {
+    let newItems = this.state[name];
+    delete newItems[id];
+
+    this.setState({
+      [name]: newItems
+    });
+  };
+
+  editItem = name => id => field => event => {
+    let newItems = this.state[name];
+    newItems[id][field] = event.target.value;
+    this.setState({
+      [name]: newItems
+    });
+  };
+
+  addFieldLeader = () => {
+    let newFieldLeaders = this.state.fieldLeaders;
+
+    newFieldLeaders[(this.state.fieldLeaderIndex + 1).toString()] = {
+      name: ""
+    };
+
+    this.setState({
+      fieldLeaderIndex: this.state.fieldLeaderIndex + 1,
+      fieldLeaders: newFieldLeaders
+    });
+  };
+
   render() {
     const { classes } = this.props;
+
+    let fieldLeaderComponents = [];
+    const fieldLeaderList = Object.keys(this.state.fieldLeaders);
+
+    for (let i = 0; i < fieldLeaderList.length; i++) {
+      fieldLeaderComponents.push(
+        <SealFilterFieldLeader
+          key={fieldLeaderList[i]}
+          numFieldLeader={i + 1}
+          fieldLeader={this.state.fieldLeaders[fieldLeaderList[i]]}
+          removeFieldLeader={() => {
+            this.removeItem("fieldLeaders")(fieldLeaderList[i]);
+          }}
+          handleChange={this.editItem("fieldLeaders")(fieldLeaderList[i])}
+        />
+      );
+    }
 
     return (
       <List>
@@ -107,15 +162,17 @@ class SealFilter extends React.Component {
               onChange={this.handleChange("recorder")}
               variant="outlined"
             />
-            <TextField
-              label="Field Leader"
-              className={classes.textField}
-              value={this.state.fieldLeader}
-              onChange={this.handleChange("fieldLeader")}
-              variant="outlined"
-            />
           </ListItemText>
         </ListItem>
+        {fieldLeaderComponents}
+        <Button
+          className={classes.button}
+          variant="outlined"
+          color={"secondary"}
+          onClick={this.addFieldLeader}
+        >
+          Add Field Leader
+        </Button>
         <Divider />
         <ListItem>
           <ListItemText>
@@ -189,20 +246,20 @@ class SealFilter extends React.Component {
               Last Observed Molt %
             </Typography>
             <TextField
-                label="Start %"
-                onChange={this.handleChange("moltStart")}
-                type="number"
-                className={classes.textField}
-                value={this.state.moltStart}
-                variant="outlined"
+              label="Start %"
+              onChange={this.handleChange("moltStart")}
+              type="number"
+              className={classes.textField}
+              value={this.state.moltStart}
+              variant="outlined"
             />
             <TextField
-                label="End %"
-                onChange={this.handleChange("moltEnd")}
-                type="number"
-                className={classes.textField}
-                value={this.state.moltEnd}
-                variant="outlined"
+              label="End %"
+              onChange={this.handleChange("moltEnd")}
+              type="number"
+              className={classes.textField}
+              value={this.state.moltEnd}
+              variant="outlined"
             />
           </ListItemText>
         </ListItem>
