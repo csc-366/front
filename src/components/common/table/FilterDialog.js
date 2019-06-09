@@ -131,7 +131,9 @@ class FilterDialog extends React.Component {
     let newFilter = this.state.filter;
 
     newFilter.fieldLeaderIndex = this.state.filter.fieldLeaderIndex + 1;
-    newFilter.fieldLeaders[(this.state.filter.fieldLeaderIndex + 1).toString()] = {
+    newFilter.fieldLeaders[
+      (this.state.filter.fieldLeaderIndex + 1).toString()
+    ] = {
       name: ""
     };
 
