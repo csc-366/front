@@ -32,12 +32,13 @@ class FilterDialog extends React.Component {
     super(props);
     this.state = {
       open: false,
-      filterSeals: true
+      filterSeals: null,
+      filters: {}
     };
   }
 
   handleClickOpen = () => {
-    this.setState({ open: true });
+    this.setState({ open: true, filterSeals: this.props.filterSeals });
   };
 
   handleClose = () => {
@@ -82,8 +83,14 @@ class FilterDialog extends React.Component {
               >
                 Filters
               </Typography>
-              <Button color="inherit" onClick={this.handleClose}>
-                save
+              <Button
+                color="inherit"
+                onClick={() => {
+                  this.props.toggleFilter(this.state.filterSeals);
+                  this.handleClose();
+                }}
+              >
+                Save
               </Button>
             </Toolbar>
           </AppBar>
