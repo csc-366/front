@@ -11,7 +11,7 @@ const styles = theme => ({
     marginLeft: theme.spacing.unit,
     minWidth: 180,
     maxWidth: 180
-  },
+  }
 });
 
 class SealFilterFieldLeader extends React.Component {

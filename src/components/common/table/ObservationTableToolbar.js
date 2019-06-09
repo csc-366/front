@@ -64,7 +64,11 @@ let ObservationTableToolbar = props => {
             </IconButton>
           </Tooltip>
         ) : (
-          <FilterDialog filterSeals={filterSeals} filter={filter} setFilter={setFilter} />
+          <FilterDialog
+            filterSeals={filterSeals}
+            filter={filter}
+            setFilter={setFilter}
+          />
         )}
       </div>
     </Toolbar>
