@@ -127,6 +127,41 @@ class FilterDialog extends React.Component {
     });
   };
 
+  addMark = () => {
+    let newFilter = this.state.filter;
+
+    newFilter.markIndex = this.state.filter.markIndex + 1;
+    newFilter.marks[(this.state.filter.markIndex + 1).toString()] = {
+      markNumber: "",
+      markPosition: [],
+      markDateStart: "",
+      markDateEnd: ""
+    };
+
+    this.setState({
+      filter: newFilter
+    });
+  };
+
+  addTag = () => {
+    let newFilter = this.state.filter;
+
+    newFilter.tagIndex = this.state.filter.tagIndex + 1;
+    newFilter.tags[(this.state.filter.tagIndex + 1).toString()] = {
+      tagNumber: "",
+      tagSide: "",
+      tagColor: "",
+      tagLocation: "",
+      tagSpike: "",
+      tagDateStart: "",
+      tagDateEnd: ""
+    };
+
+    this.setState({
+      filter: newFilter
+    });
+  };
+
   addFieldLeader = () => {
     let newFilter = this.state.filter;
 
@@ -201,7 +236,15 @@ class FilterDialog extends React.Component {
             Observation
           </Button>
           {this.state.filterSeals ? (
-            <SealFilter />
+            <SealFilter
+              filter={this.state.filter}
+              handleChange={this.handleChangeFilter}
+              removeItem={this.removeItem}
+              editItem={this.editItem}
+              addMark={this.addMark}
+              addTag={this.addTag}
+              addFieldLeader={this.addFieldLeader}
+            />
           ) : (
             <ObservationFilter
               filter={this.state.filter}
