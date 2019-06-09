@@ -336,7 +336,7 @@ class ObservationTable extends React.Component {
     openDetails: false,
     observationId: -1,
     filterSeals: true,
-    filters: {}
+    filter: {}
   };
 
   // noinspection JSCheckFunctionSignatures
@@ -389,9 +389,10 @@ class ObservationTable extends React.Component {
     return tagComponents;
   };
 
-  toggleFilter = bool => {
+  setFilter = (filterSeals, filter) => {
     this.setState({
-      filterSeals: bool
+      filterSeals: filterSeals,
+      filter: filter
     });
   };
 
@@ -407,7 +408,8 @@ class ObservationTable extends React.Component {
           <ObservationTableToolbar
             numSelected={selected.length}
             filterSeals={this.state.filterSeals}
-            toggleFilter={this.toggleFilter}
+            filter={this.state.filter}
+            setFilter={this.setFilter}
           />
           <div className={classes.tableWrapper}>
             <Table className={classes.table} aria-labelledby="tableTitle">

@@ -33,12 +33,17 @@ class FilterDialog extends React.Component {
     this.state = {
       open: false,
       filterSeals: null,
-      filters: {}
+      filter: {}
     };
   }
 
   handleClickOpen = () => {
-    this.setState({ open: true, filterSeals: this.props.filterSeals });
+    let propsFilter = JSON.parse(JSON.stringify(this.props.filter));
+    this.setState({
+      open: true,
+      filterSeals: this.props.filterSeals,
+      filter: propsFilter
+    });
   };
 
   handleClose = () => {
@@ -46,8 +51,92 @@ class FilterDialog extends React.Component {
   };
 
   toggleFilter = bool => {
+    if (bool) {
+      this.setState({
+        filterSeals: bool,
+        filter: {
+          name: "",
+          markIndex: 0,
+          marks: {},
+          tagIndex: 0,
+          tags: {},
+          sex: "",
+          dateStart: "",
+          dateEnd: "",
+          location: "",
+          recorder: "",
+          fieldLeaderIndex: 0,
+          fieldLeaders: {},
+          ageClass: "",
+          ageDays: "",
+          pupCount: "",
+          moltStart: "",
+          moltEnd: ""
+        }
+      });
+    } else {
+      this.setState({
+        filterSeals: bool,
+        filter: {
+          open: false,
+          dateStart: "",
+          dateEnd: "",
+          location: "",
+          recorder: "",
+          fieldLeaderIndex: 0,
+          fieldLeaders: {},
+          sex: "",
+          ageClass: "",
+          ageDays: "",
+          pupCount: "",
+          moltStart: "",
+          moltEnd: ""
+        }
+      });
+    }
+  };
+
+  handleChange = name => event => {
     this.setState({
-      filterSeals: bool
+      [name]: event.target.value
+    });
+  };
+
+  handleChangeFilter = name => event => {
+    let newFilter = this.state.filter;
+    newFilter[name] = event.target.value;
+    this.setState({
+      filter: newFilter
+    });
+  };
+
+  removeItem = name => id => {
+    let newFilter = this.state.filter;
+    delete newFilter[name][id];
+
+    this.setState({
+      filter: newFilter
+    });
+  };
+
+  editItem = name => id => field => event => {
+    let newFilter = this.state.filter;
+    newFilter[name][id][field] = event.target.value;
+    this.setState({
+      filter: newFilter
+    });
+  };
+
+  addFieldLeader = () => {
+    let newFilter = this.state.filter;
+
+    newFilter.fieldLeaderIndex = this.state.filter.fieldLeaderIndex + 1;
+    newFilter.fieldLeaders[(this.state.filter.fieldLeaderIndex + 1).toString()] = {
+      name: ""
+    };
+
+    this.setState({
+      filter: newFilter
     });
   };
 
@@ -69,11 +158,7 @@ class FilterDialog extends React.Component {
         >
           <AppBar className={classes.appBar}>
             <Toolbar>
-              <IconButton
-                edge="start"
-                onClick={this.handleClose}
-                color="inherit"
-              >
+              <IconButton onClick={this.handleClose} color="inherit">
                 <CloseIcon />
               </IconButton>
               <Typography
@@ -86,7 +171,10 @@ class FilterDialog extends React.Component {
               <Button
                 color="inherit"
                 onClick={() => {
-                  this.props.toggleFilter(this.state.filterSeals);
+                  this.props.setFilter(
+                    this.state.filterSeals,
+                    this.state.filter
+                  );
                   this.handleClose();
                 }}
               >
@@ -110,7 +198,17 @@ class FilterDialog extends React.Component {
           >
             Observation
           </Button>
-          {this.state.filterSeals ? <SealFilter /> : <ObservationFilter />}
+          {this.state.filterSeals ? (
+            <SealFilter />
+          ) : (
+            <ObservationFilter
+              filter={this.state.filter}
+              handleChange={this.handleChangeFilter}
+              removeItem={this.removeItem}
+              editItem={this.editItem}
+              addFieldLeader={this.addFieldLeader}
+            />
+          )}
         </Dialog>
       </div>
     );
