@@ -40,7 +40,6 @@ class SealFilterTag extends React.Component {
     const { classes, handleChange, tag } = this.props;
 
     return (
-      <React.Fragment>
         <ListItem>
           <ListItemText>
             <Typography className={classes.header} variant="subtitle2">
@@ -143,7 +142,6 @@ class SealFilterTag extends React.Component {
             <CloseIcon />
           </IconButton>
         </ListItem>
-      </React.Fragment>
     );
   }
 }

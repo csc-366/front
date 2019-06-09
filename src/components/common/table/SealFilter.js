@@ -12,6 +12,8 @@ import ListItemText from "@material-ui/core/ListItemText";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
 import SealFilterTag from "./SealFilterTag";
 import Button from "@material-ui/core/Button";
+import SealFilterMark from "./SealFilterMark";
+import SealFilterFieldLeader from "./SealFilterFieldLeader";
 
 const styles = theme => ({
   header: {
@@ -41,18 +43,17 @@ class SealFilter extends React.Component {
     super(props);
     this.state = {
       name: "",
-      markNumber: "",
-      markPosition: [],
-      markDateStart: "",
-      markDateEnd: "",
-      tags: {},
+      markIndex: 0,
+      marks: {},
       tagIndex: 0,
+      tags: {},
       sex: "",
       dateStart: "",
       dateEnd: "",
       location: "",
       recorder: "",
-      fieldLeader: "",
+      fieldLeaderIndex: 0,
+      fieldLeaders: {},
       ageClass: "",
       ageDays: "",
       pupCount: "",
@@ -64,6 +65,39 @@ class SealFilter extends React.Component {
   handleChange = name => event => {
     this.setState({
       [name]: event.target.value
+    });
+  };
+
+  removeItem = name => id => {
+    let newItems = this.state[name];
+    delete newItems[id];
+
+    this.setState({
+      [name]: newItems
+    });
+  };
+
+  editItem = name => id => field => event => {
+    let newItems = this.state[name];
+    newItems[id][field] = event.target.value;
+    this.setState({
+      [name]: newItems
+    });
+  };
+
+  addMark = () => {
+    let newMarks = this.state.marks;
+
+    newMarks[(this.state.markIndex + 1).toString()] = {
+      markNumber: "",
+      markPosition: [],
+      markDateStart: "",
+      markDateEnd: ""
+    };
+
+    this.setState({
+      markIndex: this.state.markIndex + 1,
+      marks: newMarks
     });
   };
 
@@ -86,25 +120,38 @@ class SealFilter extends React.Component {
     });
   };
 
-  removeTag = id => {
-    let newTags = this.state.tags;
-    delete newTags[id];
+  addFieldLeader = () => {
+    let newFieldLeaders = this.state.fieldLeaders;
+
+    newFieldLeaders[(this.state.fieldLeaderIndex + 1).toString()] = {
+      name: ""
+    };
 
     this.setState({
-      tags: newTags
-    });
-  };
-
-  editTag = id => name => event => {
-    let newTags = this.state.tags;
-    newTags[id][name] = event.target.value;
-    this.setState({
-      tags: newTags
+      fieldLeaderIndex: this.state.fieldLeaderIndex + 1,
+      fieldLeaders: newFieldLeaders
     });
   };
 
   render() {
     const { classes } = this.props;
+
+    let markComponents = [];
+    const markList = Object.keys(this.state.marks);
+
+    for (let i = 0; i < markList.length; i++) {
+      markComponents.push(
+        <SealFilterMark
+          key={markList[i]}
+          numMark={i + 1}
+          mark={this.state.marks[markList[i]]}
+          removeMark={() => {
+            this.removeItem("marks")(markList[i]);
+          }}
+          handleChange={this.editItem("marks")(markList[i])}
+        />
+      );
+    }
 
     let tagComponents = [];
     const tagList = Object.keys(this.state.tags);
@@ -115,12 +162,27 @@ class SealFilter extends React.Component {
           key={tagList[i]}
           numTag={i + 1}
           tag={this.state.tags[tagList[i]]}
-          handleChange={
-            this.editTag(tagList[i])
-          }
           removeTag={() => {
-            this.removeTag(tagList[i]);
+            this.removeItem("tags")(tagList[i]);
           }}
+          handleChange={this.editItem("tags")(tagList[i])}
+        />
+      );
+    }
+
+    let fieldLeaderComponents = [];
+    const fieldLeaderList = Object.keys(this.state.fieldLeaders);
+
+    for (let i = 0; i < fieldLeaderList.length; i++) {
+      fieldLeaderComponents.push(
+        <SealFilterFieldLeader
+          key={fieldLeaderList[i]}
+          numFieldLeader={i + 1}
+          fieldLeader={this.state.fieldLeaders[fieldLeaderList[i]]}
+          removeFieldLeader={() => {
+            this.removeItem("fieldLeaders")(fieldLeaderList[i]);
+          }}
+          handleChange={this.editItem("fieldLeaders")(fieldLeaderList[i])}
         />
       );
     }
@@ -142,58 +204,15 @@ class SealFilter extends React.Component {
           </ListItemText>
         </ListItem>
         <Divider />
-        <ListItem>
-          <ListItemText>
-            <Typography className={classes.header} variant="subtitle2">
-              Mark 1
-            </Typography>
-            <TextField
-              label="Mark Number"
-              className={classes.textField}
-              value={this.state.markNumber}
-              onChange={this.handleChange("markNumber")}
-              variant="outlined"
-            />
-            <FormControl className={classes.formControl}>
-              <Select
-                multiple
-                value={this.state.markPosition}
-                onChange={this.handleChange("markPosition")}
-                input={<OutlinedInput labelWidth={0} />}
-                displayEmpty
-              >
-                <MenuItem value="" disabled>
-                  <i>Select Position(s)</i>
-                </MenuItem>
-                <MenuItem value={"left"}>Left</MenuItem>
-                <MenuItem value={"right"}>Right</MenuItem>
-                <MenuItem value={"back"}>Back</MenuItem>
-              </Select>
-            </FormControl>
-            <TextField
-              label="Deploy Date Start"
-              type="date"
-              className={classes.textField}
-              onChange={this.handleChange("markDateStart")}
-              value={this.state.markDateStart}
-              variant="outlined"
-              InputLabelProps={{
-                shrink: true
-              }}
-            />
-            <TextField
-              label="Deploy Date End"
-              type="date"
-              className={classes.textField}
-              onChange={this.handleChange("markDateEnd")}
-              value={this.state.markDateEnd}
-              variant="outlined"
-              InputLabelProps={{
-                shrink: true
-              }}
-            />
-          </ListItemText>
-        </ListItem>
+        {markComponents}
+        <Button
+          className={classes.button}
+          variant="outlined"
+          color={"secondary"}
+          onClick={this.addMark}
+        >
+          Add Mark
+        </Button>
         <Divider />
         {tagComponents}
         <Button
@@ -275,15 +294,17 @@ class SealFilter extends React.Component {
               onChange={this.handleChange("recorder")}
               variant="outlined"
             />
-            <TextField
-              label="Field Leader"
-              className={classes.textField}
-              value={this.state.fieldLeader}
-              onChange={this.handleChange("fieldLeader")}
-              variant="outlined"
-            />
           </ListItemText>
         </ListItem>
+        {fieldLeaderComponents}
+        <Button
+          className={classes.button}
+          variant="outlined"
+          color={"secondary"}
+          onClick={this.addFieldLeader}
+        >
+          Add Field Leader
+        </Button>
         <Divider />
         <ListItem>
           <ListItemText>
