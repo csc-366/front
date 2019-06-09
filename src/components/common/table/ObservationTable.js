@@ -336,7 +336,25 @@ class ObservationTable extends React.Component {
     openDetails: false,
     observationId: -1,
     filterSeals: true,
-    filter: {}
+    filter: {
+      name: "",
+      markIndex: 0,
+      marks: {},
+      tagIndex: 0,
+      tags: {},
+      sex: "",
+      dateStart: "",
+      dateEnd: "",
+      location: "",
+      recorder: "",
+      fieldLeaderIndex: 0,
+      fieldLeaders: {},
+      ageClass: "",
+      ageDays: "",
+      pupCount: "",
+      moltStart: "",
+      moltEnd: ""
+    }
   };
 
   // noinspection JSCheckFunctionSignatures
