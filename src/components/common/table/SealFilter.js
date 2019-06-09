@@ -95,17 +95,29 @@ class SealFilter extends React.Component {
     });
   };
 
+  editTag = id => name => event => {
+    let newTags = this.state.tags;
+    newTags[id][name] = event.target.value;
+    this.setState({
+      tags: newTags
+    });
+  };
+
   render() {
     const { classes } = this.props;
 
-    let tags = [];
+    let tagComponents = [];
     const tagList = Object.keys(this.state.tags);
 
     for (let i = 0; i < tagList.length; i++) {
-      tags.push(
+      tagComponents.push(
         <SealFilterTag
           key={tagList[i]}
           numTag={i + 1}
+          tag={this.state.tags[tagList[i]]}
+          handleChange={
+            this.editTag(tagList[i])
+          }
           removeTag={() => {
             this.removeTag(tagList[i]);
           }}
@@ -183,7 +195,7 @@ class SealFilter extends React.Component {
           </ListItemText>
         </ListItem>
         <Divider />
-        {tags}
+        {tagComponents}
         <Button
           className={classes.button}
           variant="outlined"
