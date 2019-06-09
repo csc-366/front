@@ -40,74 +40,25 @@ class SealFilter extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      open: false,
-      dateStart: "",
-      dateEnd: "",
-      location: "",
-      recorder: "",
-      fieldLeaderIndex: 0,
-      fieldLeaders: {},
-      sex: "",
-      ageClass: "",
-      ageDays: "",
-      pupCount: "",
-      moltStart: "",
-      moltEnd: ""
     };
   }
 
-  handleChange = name => event => {
-    this.setState({
-      [name]: event.target.value
-    });
-  };
-
-  removeItem = name => id => {
-    let newItems = this.state[name];
-    delete newItems[id];
-
-    this.setState({
-      [name]: newItems
-    });
-  };
-
-  editItem = name => id => field => event => {
-    let newItems = this.state[name];
-    newItems[id][field] = event.target.value;
-    this.setState({
-      [name]: newItems
-    });
-  };
-
-  addFieldLeader = () => {
-    let newFieldLeaders = this.state.fieldLeaders;
-
-    newFieldLeaders[(this.state.fieldLeaderIndex + 1).toString()] = {
-      name: ""
-    };
-
-    this.setState({
-      fieldLeaderIndex: this.state.fieldLeaderIndex + 1,
-      fieldLeaders: newFieldLeaders
-    });
-  };
-
   render() {
-    const { classes } = this.props;
+    const { classes, filter, handleChange } = this.props;
 
     let fieldLeaderComponents = [];
-    const fieldLeaderList = Object.keys(this.state.fieldLeaders);
+    const fieldLeaderList = Object.keys(filter.fieldLeaders);
 
     for (let i = 0; i < fieldLeaderList.length; i++) {
       fieldLeaderComponents.push(
         <SealFilterFieldLeader
           key={fieldLeaderList[i]}
           numFieldLeader={i + 1}
-          fieldLeader={this.state.fieldLeaders[fieldLeaderList[i]]}
+          fieldLeader={filter.fieldLeaders[fieldLeaderList[i]]}
           removeFieldLeader={() => {
-            this.removeItem("fieldLeaders")(fieldLeaderList[i]);
+            this.props.removeItem("fieldLeaders")(fieldLeaderList[i]);
           }}
-          handleChange={this.editItem("fieldLeaders")(fieldLeaderList[i])}
+          handleChange={this.props.editItem("fieldLeaders")(fieldLeaderList[i])}
         />
       );
     }
@@ -123,8 +74,8 @@ class SealFilter extends React.Component {
               label="Date Start"
               type="date"
               className={classes.textField}
-              onChange={this.handleChange("dateStart")}
-              value={this.state.dateStart}
+              onChange={handleChange("dateStart")}
+              value={filter.dateStart}
               variant="outlined"
               InputLabelProps={{
                 shrink: true
@@ -134,8 +85,8 @@ class SealFilter extends React.Component {
               label="Date End"
               type="date"
               className={classes.textField}
-              onChange={this.handleChange("dateEnd")}
-              value={this.state.dateEnd}
+              onChange={handleChange("dateEnd")}
+              value={filter.dateEnd}
               variant="outlined"
               InputLabelProps={{
                 shrink: true
@@ -143,8 +94,8 @@ class SealFilter extends React.Component {
             />
             <FormControl className={classes.formControl}>
               <Select
-                value={this.state.location}
-                onChange={this.handleChange("location")}
+                value={filter.location}
+                onChange={handleChange("location")}
                 input={<OutlinedInput labelWidth={0} />}
                 displayEmpty
               >
@@ -158,8 +109,8 @@ class SealFilter extends React.Component {
             <TextField
               label="Recorder"
               className={classes.textField}
-              value={this.state.recorder}
-              onChange={this.handleChange("recorder")}
+              value={filter.recorder}
+              onChange={handleChange("recorder")}
               variant="outlined"
             />
           </ListItemText>
@@ -169,7 +120,7 @@ class SealFilter extends React.Component {
           className={classes.button}
           variant="outlined"
           color={"secondary"}
-          onClick={this.addFieldLeader}
+          onClick={this.props.addFieldLeader}
         >
           Add Field Leader
         </Button>
@@ -181,8 +132,8 @@ class SealFilter extends React.Component {
             </Typography>
             <FormControl className={classes.formControl}>
               <Select
-                value={this.state.sex}
-                onChange={this.handleChange("sex")}
+                value={filter.sex}
+                onChange={handleChange("sex")}
                 input={<OutlinedInput labelWidth={0} />}
                 displayEmpty
               >
@@ -203,8 +154,8 @@ class SealFilter extends React.Component {
             </Typography>
             <FormControl className={classes.formControl}>
               <Select
-                value={this.state.ageClass}
-                onChange={this.handleChange("ageClass")}
+                value={filter.ageClass}
+                onChange={handleChange("ageClass")}
                 input={<OutlinedInput labelWidth={0} />}
                 displayEmpty
               >
@@ -217,22 +168,22 @@ class SealFilter extends React.Component {
                 <MenuItem value={"A"}>Adult</MenuItem>
               </Select>
             </FormControl>
-            {this.state.ageClass === "P" ? (
+            {filter.ageClass === "P" ? (
               <TextField
                 label="Age in Days"
                 className={classes.textField}
-                value={this.state.ageDays}
-                onChange={this.handleChange("ageDays")}
+                value={filter.ageDays}
+                onChange={handleChange("ageDays")}
                 type="number"
                 variant="outlined"
               />
             ) : null}
-            {this.state.sex === "female" && this.state.ageClass === "A" ? (
+            {filter.sex === "female" && filter.ageClass === "A" ? (
               <TextField
                 label="Pup Count"
                 className={classes.textField}
-                value={this.state.pupCount}
-                onChange={this.handleChange("pupCount")}
+                value={filter.pupCount}
+                onChange={handleChange("pupCount")}
                 type="number"
                 variant="outlined"
               />
@@ -247,18 +198,18 @@ class SealFilter extends React.Component {
             </Typography>
             <TextField
               label="Start %"
-              onChange={this.handleChange("moltStart")}
+              onChange={handleChange("moltStart")}
               type="number"
               className={classes.textField}
-              value={this.state.moltStart}
+              value={filter.moltStart}
               variant="outlined"
             />
             <TextField
               label="End %"
-              onChange={this.handleChange("moltEnd")}
+              onChange={handleChange("moltEnd")}
               type="number"
               className={classes.textField}
-              value={this.state.moltEnd}
+              value={filter.moltEnd}
               variant="outlined"
             />
           </ListItemText>

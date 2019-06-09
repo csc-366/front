@@ -36,7 +36,7 @@ const toolbarStyles = theme => ({
 });
 
 let ObservationTableToolbar = props => {
-  const { numSelected, classes, filterSeals, toggleFilter } = props;
+  const { numSelected, classes, filterSeals, filter, setFilter } = props;
 
   return (
     <Toolbar
@@ -64,7 +64,7 @@ let ObservationTableToolbar = props => {
             </IconButton>
           </Tooltip>
         ) : (
-          <FilterDialog filterSeals={filterSeals} toggleFilter={toggleFilter} />
+          <FilterDialog filterSeals={filterSeals} filter={filter} setFilter={setFilter} />
         )}
       </div>
     </Toolbar>
