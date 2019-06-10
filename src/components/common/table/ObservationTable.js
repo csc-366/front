@@ -119,7 +119,7 @@ class ObservationTable extends React.Component {
                                 <TableCell component="th" scope="row">
                                     {new Date(n.Date).toDateString()}
                                 </TableCell>
-                                <TableCell align="left">{n.FieldLeaders}</TableCell>
+                                <TableCell align="left">{n.FieldLeaders.join(', ')}</TableCell>
                                 <TableCell align="left">{n.Location}</TableCell>
                                 <TableCell align="left">{n.Sex}</TableCell>
                                 <TableCell align="left">{n.Age}</TableCell>
