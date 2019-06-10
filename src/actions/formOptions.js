@@ -1,12 +1,12 @@
-import {ERROR, GET_LOCATIONS, GET_TAG_COLORS, GET_TAG_POSITIONS} from "./types";
+import {DELETE_VALUE, ERROR, GET_PRESET_DATA, UPDATE_PRESET_DATA} from "./types";
 import {backend} from "../apis/backend";
 
-export const getLocations = () => async (dispatch) => {
+export const getPresetData = () => async (dispatch) => {
     try {
-        const locations = (await backend.get('/locations')).data.data;
+        const data = (await backend.get('/formOptions')).data.data;
         dispatch({
-            type: GET_LOCATIONS,
-            payload: {locations}
+            type: GET_PRESET_DATA,
+            payload: data
         })
     } catch (e) {
         dispatch({
@@ -16,32 +16,71 @@ export const getLocations = () => async (dispatch) => {
     }
 };
 
-export const getTagColors = () => async (dispatch) => {
+export const deleteValue = (valueType, valueKey, value) => async (dispatch) => {
+    console.log(valueType, valueKey.toLowerCase(), value);
     try {
-        const colors = (await backend.get('/colors')).data.data;
+        await backend.delete(`/formOptions/${valueType}`, {
+            data: {
+                [valueKey.toLowerCase()]: value
+            }
+        });
         dispatch({
-            type: GET_TAG_COLORS,
-            payload: {colors}
+            type: DELETE_VALUE,
+            payload: {
+                value: [valueType, valueKey, value]
+            }
         })
     } catch (e) {
+        const {response} = e;
+        console.log(response);
+        let message = response.data.message;
+        if (typeof message === 'object') {
+            message = message.map(error => `${error.param} ${error.msg}`).join(', ')
+        }
         dispatch({
             type: ERROR,
-            payload: {message: e.response.data.message}
+            payload: {message}
         })
     }
 };
 
-export const getTagPositions = () => async (dispatch) => {
+export const updateFormOption = (option) => (value) => async (dispatch) => {
+    let url = null;
+    switch(option) {
+        case 'locations':
+            url = '/formOptions/locations';
+            break;
+        case 'positions':
+            url = '/formOptions/tagPositions';
+            break;
+        case 'colors':
+            url = '/formOptions/colors';
+            break;
+        case 'rookeries':
+            url = '/formOptions/rookeries';
+            break;
+        case 'ageClasses':
+            url = '/formOptions/ageClasses';
+            break;
+        case 'affiliations':
+            url = '/formOptions/affiliations';
+            break;
+        default:
+            return;
+    }
+
     try {
-        const positions = (await backend.get('/tagPositions')).data.data;
+        const result = (await backend.post(url, value)).data.data;
+        await getPresetData();
         dispatch({
-            type: GET_TAG_POSITIONS,
-            payload: positions
+            type: UPDATE_PRESET_DATA,
+            payload: {[option]: result}
         })
     } catch (e) {
+        console.log(e);
         dispatch({
             type: ERROR,
-            payload: {message: e.response.data.message}
+            payload: {message: e.message}
         })
     }
-}
+};

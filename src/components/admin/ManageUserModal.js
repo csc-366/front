@@ -4,7 +4,7 @@ import defaultStyles from "../../defaultStyles";
 import Typography from '@material-ui/core/Typography';
 import Modal from '@material-ui/core/Modal';
 import {connect} from 'react-redux';
-import {setManagedUser} from "../../actions/admin";
+import {setManagedUser, setUserState} from "../../actions/admin";
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import Divider from '@material-ui/core/Divider';
@@ -48,6 +48,38 @@ class ManageUserModal extends React.Component {
         this.props.setManagedUser(null);
     };
 
+    setUserState = (state) => () => {
+        const {managedUser} = this.props;
+        this.props.setUserState(managedUser, state);
+    };
+
+    renderStateManagement = (user) => {
+        const {classes} = this.props;
+        switch (user.status) {
+            case 'Active':
+                return (
+                    <Button variant={"contained"} color={"secondary"} className={classes.button}
+                            onClick={this.setUserState('Deactivated')}>Deactivate</Button>
+                );
+            case 'Deactivated':
+                return (
+                    <Button variant={"contained"} color={"primary"} className={classes.button}
+                            onClick={this.setUserState('Active')}>Activate</Button>
+                );
+            case 'Pending':
+                return (
+                    <>
+                        <Button variant={"contained"} color={"primary"} className={classes.button}
+                                onClick={this.setUserState('Active')}>Activate</Button>
+                        <Button variant={"contained"} color={"secondary"} className={classes.button}
+                                onClick={this.setUserState('Deactivated')}>Deactivate</Button>
+                    </>
+                );
+            default:
+                return null
+        }
+    };
+
     renderManagedUser = () => {
         const user = this.props.managedUser;
         const {classes} = this.props;
@@ -55,7 +87,7 @@ class ManageUserModal extends React.Component {
         return (
             <div style={getModalStyle()} className={classes.paper}>
                 <Typography variant="h6" id="modal-title">
-                    {user.name}
+                    {`${user.firstName} ${user.lastName}`}
                 </Typography>
                 <List>
                     <ListItem>
@@ -74,13 +106,19 @@ class ManageUserModal extends React.Component {
                     </ListItem>
                     <Divider/>
                     <ListItem>
-                        <Icon className={classes.icon}>access_time</Icon>
-                        <Typography>{user.lastActive}</Typography>
+                        <Icon className={classes.icon}>gavel</Icon>
+                        <Typography>{user.role}</Typography>
+                    </ListItem>
+                    <Divider/>
+                    <ListItem>
+                        <Icon className={classes.icon}>lock</Icon>
+                        <Typography>{user.status}</Typography>
                     </ListItem>
                 </List>
                 <div className={classes.buttonGroup}>
-                    <Button variant={"contained"} color={"secondary"} className={classes.button}>Deactivate</Button>
-                    <Button variant={"contained"} color={"primary"} className={classes.button}>Modify Permissions</Button>
+                    {this.renderStateManagement(user)}
+                    <Button variant={"contained"} color={"primary"} className={classes.button}>Modify
+                        Permissions</Button>
                 </div>
             </div>
         )
@@ -110,6 +148,6 @@ const mapStateToProps = state => {
     return {
         managedUser: state.admin.managedUser
     }
-}
+};
 
-export default connect(mapStateToProps, {setManagedUser})(withStyles(styles)(ManageUserModal));
+export default connect(mapStateToProps, {setManagedUser, setUserState})(withStyles(styles)(ManageUserModal));

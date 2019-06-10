@@ -11,6 +11,7 @@ import {connect} from 'react-redux';
 import "./App.css";
 import ManageUsers from "./admin/ManageUsers";
 import ErrorSnackbar from "./common/ErrorSnackbar";
+import Admin from './admin/Admin';
 
 class App extends React.Component {
     mapPrivilegedRoutes = () => {
@@ -28,7 +29,10 @@ class App extends React.Component {
     mapAdminRoutes = () => {
         if (this.props.isLoggedIn && this.props.role === 'Admin') {
             return (
-                <Route path="/manage_users" component={ManageUsers}/>
+                <>
+                    <Route path="/manage_users" component={ManageUsers}/>
+                    <Route path="/admin" component={Admin}/>
+                </>
             )
         }
         return null

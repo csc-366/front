@@ -41,10 +41,17 @@ export const login = (username, password) => async (dispatch) => {
 };
 
 export const logout = () => async (dispatch) => {
-    await backend.post('/')
-    return {
-        type: LOG_OUT
+    try {
+        await backend.delete('/sessions');
+        dispatch({
+            type: LOG_OUT
+        });
+    } catch (e) {
+        dispatch({
+            type: LOG_OUT
+        });
     }
+    history.push('/');
 };
 
 export const register = (firstName, lastName, email, username, password, confirmPassword) => async (dispatch) => {
@@ -63,8 +70,10 @@ export const register = (firstName, lastName, email, username, password, confirm
         });
         history.push('/dashboard')
     } catch (e) {
-        const response = e.response.data.message;
-        console.log(response);
+        let response = e.response.data.message;
+        if (typeof response !== 'string') {
+            response = 'Unknown Error'
+        }
         dispatch({
             type: ERROR,
             payload: {message: response}

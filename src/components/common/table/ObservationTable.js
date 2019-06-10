@@ -8,12 +8,14 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import defaultStyles from '../../../defaultStyles';
-import {createData, stableSort, getSorting} from './util';
+import {stableSort, getSorting} from './util';
 import ObservationTableHead from './ObservationTableHead';
 import ObservationTableToolbar from './ObservationTableToolbar';
 import MarkChip from "./MarkChip";
 import TagChip from "./TagChip";
-import ObservationDetailsModal from "../../details/ObservationDetailsModal";
+import {connect} from 'react-redux';
+import {getPendingObservations} from "../../../actions/pendingObservation";
+import PendingObservationDetailsModal from "../../details/PendingObservationDetailsModal";
 
 
 const styles = theme => ({
@@ -35,101 +37,21 @@ class ObservationTable extends React.Component {
         order: 'asc',
         orderBy: 'calories',
         selected: [],
-        data: [
-            createData(new Date().toDateString(), 'CC', 'ACC', 'M', 'J', [{
-                number: '7XPP',
-                position: 'L'
-            }, {number: '7XPP', position: 'L'}], [{number: '8RQP', color: 'W', position: 'Ri-so-Si'}]),
-            createData(new Date().toDateString(), 'CC', 'ACC', 'M', 'J', [{
-                number: '7XPP',
-                position: 'L'
-            }], [{number: '8RQP', color: 'B', position: 'Ri-so-Si'}]),
-            createData(new Date().toDateString(), 'CC', 'ACC', 'M', 'J', [{
-                number: '7XPP',
-                position: 'L'
-            }], [{number: '8RQP', color: 'G', position: 'Ri-so-Si'}]),
-            createData(new Date().toDateString(), 'CC', 'ACC', 'M', 'A', [{
-                number: '7XPP',
-                position: 'L'
-            }], [{number: '8RQP', color: 'P', position: 'Ri-so-Si'}]),
-            createData(new Date().toDateString(), 'CC', 'ACC', 'M', 'A', [{
-                number: '7XPP',
-                position: 'L'
-            }], [{number: '8RQP', color: 'V', position: 'Ri-so-Si'}]),
-            createData(new Date().toDateString(), 'CC', 'ACC', 'M', 'A', [{
-                number: '7XPP',
-                position: 'L'
-            }], [{number: '8RQP', color: 'R', position: 'Ri-so-Si'}]),
-            createData(new Date().toDateString(), 'CC', 'ACC', 'M', 'A', [{
-                number: '7XPP',
-                position: 'L'
-            }], [{number: '8RQP', color: 'Y', position: 'Ri-so-Si'}]),
-            createData(new Date().toDateString(), 'CC', 'ACC', 'M', 'A', [{
-                number: '7XPP',
-                position: 'L'
-            }], [{number: '8RQP', color: 'O', position: 'Ri-so-Si'}]),
-            createData(new Date().toDateString(), 'CC', 'ACC', 'M', 'A', [{
-                number: '7XPP',
-                position: 'L'
-            }], [{number: '8RQP', color: 'G', position: 'Ri-so-Si'}]),
-            createData(new Date().toDateString(), 'CC', 'ACC', 'F', 'A', [{
-                number: '7XPP',
-                position: 'L'
-            }], [{number: '8RQP', color: 'G', position: 'Ri-so-Si'}]),
-            createData(new Date().toDateString(), 'CC', 'ACC', 'F', 'A', [{
-                number: '7XPP',
-                position: 'L'
-            }], [{number: '8RQP', color: 'G', position: 'Ri-so-Si'}]),
-            createData(new Date().toDateString(), 'CC', 'ACC', 'F', 'A', [{
-                number: '7XPP',
-                position: 'L'
-            }], [{number: '8RQP', color: 'G', position: 'Ri-so-Si'}]),
-            createData(new Date().toDateString(), 'CC', 'ACC', 'F', 'A', [{
-                number: '7XPP',
-                position: 'L'
-            }], [{number: '8RQP', color: 'G', position: 'Ri-so-Si'}]),
-            createData(new Date().toDateString(), 'CC', 'ACC', 'F', 'A', [{
-                number: '7XPP',
-                position: 'L'
-            }], [{number: '8RQP', color: 'G', position: 'Ri-so-Si'}]),
-            createData(new Date().toDateString(), 'CC', 'ACC', 'F', 'J', [{
-                number: '7XPP',
-                position: 'L'
-            }], [{number: '8RQP', color: 'G', position: 'Ri-so-Si'}]),
-            createData(new Date().toDateString(), 'CC', 'ACC', 'F', 'J', [{
-                number: '7XPP',
-                position: 'L'
-            }], [{number: '8RQP', color: 'G', position: 'Ri-so-Si'}]),
-            createData(new Date().toDateString(), 'CC', 'ACC', 'F', 'J', [{
-                number: '7XPP',
-                position: 'L'
-            }], [{number: '8RQP', color: 'G', position: 'Ri-so-Si'}]),
-            createData(new Date().toDateString(), 'CC', 'ACC', 'F', 'J', [{
-                number: '7XPP',
-                position: 'L'
-            }], [{number: '8RQP', color: 'G', position: 'Ri-so-Si'}]),
-            createData(new Date().toDateString(), 'CC', 'ACC', 'F', 'J', [{
-                number: '7XPP',
-                position: 'L'
-            }], [{number: '8RQP', color: 'G', position: 'Ri-so-Si'}]),
-            createData(new Date().toDateString(), 'CC', 'ACC', 'F', 'J', [{
-                number: '7XPP',
-                position: 'L'
-            }], [{number: '8RQP', color: 'G', position: 'Ri-so-Si'}]),
-            createData(new Date().toDateString(), 'CC', 'ACC', 'F', 'J', [{
-                number: '7XPP',
-                position: 'L'
-            }], [{number: '8RQP', color: 'G', position: 'Ri-so-Si'}]),
-        ],
         page: 0,
         rowsPerPage: 5,
         openDetails: false,
-        observationId: -1
+        ObservationId: -1,
+        pageDidChange: false,
+        countDidChange: false
     };
+
+    componentDidMount() {
+        this.props.getPendingObservations();
+    }
 
     // noinspection JSCheckFunctionSignatures
     componentDidUpdate() {
-        window.scrollTo(0, 0)
+        window.scrollTo(0, 0);
     }
 
     handleRequestSort = (event, property) => {
@@ -144,15 +66,15 @@ class ObservationTable extends React.Component {
     };
 
     handleClick = (event, id) => {
-        this.setState({observationId: id, openDetails: true});
+        this.setState({ObservationId: id, openDetails: true});
     };
 
     handleChangePage = (event, page) => {
-        this.setState({page, openDetails: false});
+        this.setState({page, openDetails: false, pageDidChange: true});
     };
 
     handleChangeRowsPerPage = event => {
-        this.setState({rowsPerPage: event.target.value, openDetails: false});
+        this.setState({rowsPerPage: event.target.value, openDetails: false, countDidChange: true});
     };
 
     renderMarks = (marks) => {
@@ -173,11 +95,55 @@ class ObservationTable extends React.Component {
         return tagComponents;
     };
 
-    render() {
+    renderPendingObservations = () => {
         const {classes} = this.props;
-        const {data, order, orderBy, selected, rowsPerPage, page} = this.state;
-        const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
+        const {order, orderBy, rowsPerPage, page} = this.state;
+        const {pendingObservations} = this.props;
 
+        if (!pendingObservations) {
+            return null;
+        }
+        const emptyRows = rowsPerPage - Math.min(rowsPerPage, pendingObservations.length - page * rowsPerPage);
+        return (
+            <TableBody className={classes.tableBody}>
+                {stableSort(pendingObservations, getSorting(order, orderBy))
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map(n => {
+                        return (
+                            <TableRow
+                                hover
+                                onClick={event => this.handleClick(event, n.ObservationId)}
+                                tabIndex={-1}
+                                key={n.ObservationId}
+                            >
+                                <TableCell component="th" scope="row">
+                                    {new Date(n.Date).toDateString()}
+                                </TableCell>
+                                <TableCell align="left">{n.FieldLeaders}</TableCell>
+                                <TableCell align="left">{n.Location}</TableCell>
+                                <TableCell align="left">{n.Sex}</TableCell>
+                                <TableCell align="left">{n.Age}</TableCell>
+                                <TableCell align="left">{this.renderMarks(n.marks)}</TableCell>
+                                <TableCell align="left">{this.renderTags(n.tags)}</TableCell>
+                            </TableRow>
+                        );
+                    })}
+                {emptyRows > 0 && (
+                    <TableRow style={{height: 49 * emptyRows}}>
+                        <TableCell colSpan={6}/>
+                    </TableRow>
+                )}
+            </TableBody>
+        );
+    };
+
+    handleModalClose = () => {
+        this.setState({openDetails: false})
+    };
+
+    render() {
+        const {classes, pendingObservations} = this.props;
+        const {order, orderBy, selected, rowsPerPage, page} = this.state;
         return (
             <>
                 <Paper className={classes.root}>
@@ -189,41 +155,13 @@ class ObservationTable extends React.Component {
                                 orderBy={orderBy}
                                 onRequestSort={this.handleRequestSort}
                             />
-                            <TableBody>
-                                {stableSort(data, getSorting(order, orderBy))
-                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                    .map(n => {
-                                        return (
-                                            <TableRow
-                                                hover
-                                                onClick={event => this.handleClick(event, n.id)}
-                                                tabIndex={-1}
-                                                key={n.id}
-                                            >
-                                                <TableCell component="th" scope="row">
-                                                    {n.date}
-                                                </TableCell>
-                                                <TableCell align="left">{n.fieldLeaders}</TableCell>
-                                                <TableCell align="left">{n.location}</TableCell>
-                                                <TableCell align="left">{n.sex}</TableCell>
-                                                <TableCell align="left">{n.age}</TableCell>
-                                                <TableCell align="left">{this.renderMarks(n.marks)}</TableCell>
-                                                <TableCell align="left">{this.renderTags(n.tags)}</TableCell>
-                                            </TableRow>
-                                        );
-                                    })}
-                                {emptyRows > 0 && (
-                                    <TableRow style={{height: 49 * emptyRows}}>
-                                        <TableCell colSpan={6}/>
-                                    </TableRow>
-                                )}
-                            </TableBody>
+                            {this.renderPendingObservations()}
                         </Table>
                     </div>
                     <TablePagination
                         rowsPerPageOptions={[5, 25, 50, 250, 1000, 2000]}
                         component="div"
-                        count={data.length}
+                        count={pendingObservations.length}
                         rowsPerPage={rowsPerPage}
                         page={page}
                         backIconButtonProps={{
@@ -236,9 +174,9 @@ class ObservationTable extends React.Component {
                         onChangeRowsPerPage={this.handleChangeRowsPerPage}
                     />
                 </Paper>
-                <ObservationDetailsModal open={this.state.openDetails} observationId={this.state.observationId}/>
+                <PendingObservationDetailsModal open={this.state.openDetails} handleClose={this.handleModalClose} ObservationId={this.state.ObservationId}/>
             </>
-        );
+        )
     }
 }
 
@@ -246,4 +184,10 @@ ObservationTable.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(ObservationTable);
+const mapStateToProps = state => {
+    return {
+        pendingObservations: state.observations.pending,
+    }
+};
+
+export default connect(mapStateToProps, {getPendingObservations})(withStyles(styles)(ObservationTable));

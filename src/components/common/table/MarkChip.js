@@ -7,13 +7,13 @@ import defaultStyles from '../../../defaultStyles';
 
 const MarkChip = ({number, position}) => {
     return (
-        <Chip label={`${number}@${position}`}/>
+        <Chip label={`${number ? number : '?'}@${position ? position : '?'}`}/>
     );
 };
 
 MarkChip.propTypes = {
-    number: PropTypes.string.isRequired,
-    position: PropTypes.string.isRequired,
+    number: PropTypes.string,
+    position: PropTypes.string,
 };
 
 export default withStyles(defaultStyles)(MarkChip);
