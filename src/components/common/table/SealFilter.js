@@ -223,20 +223,45 @@ class SealFilter extends React.Component {
               Last Observed Age
             </Typography>
             <FormControl className={classes.formControl}>
-              <Select
-                value={filter.ageClass}
-                onChange={handleChange("ageClass")}
-                input={<OutlinedInput labelWidth={0} />}
-                displayEmpty
-              >
-                <MenuItem value="">
-                  <i>Select Age Class</i>
-                </MenuItem>
-                <MenuItem value={"P"}>Pup</MenuItem>
-                <MenuItem value={"W"}>Weanling</MenuItem>
-                <MenuItem value={"J"}>Juvenile</MenuItem>
-                <MenuItem value={"A"}>Adult</MenuItem>
-              </Select>
+              {filter.sex === "male" ? (
+                <React.Fragment>
+                  <Select
+                    value={filter.ageClass}
+                    onChange={handleChange("ageClass")}
+                    input={<OutlinedInput labelWidth={0} />}
+                    displayEmpty
+                  >
+                    <MenuItem value="">
+                      <i>Select Age Class</i>
+                    </MenuItem>
+                    <MenuItem value={"P"}>Pup</MenuItem>
+                    <MenuItem value={"W"}>Weanling</MenuItem>
+                    <MenuItem value={"J"}>Juvenile</MenuItem>
+                    <MenuItem value={"SA1"}>Subadult 1</MenuItem>
+                    <MenuItem value={"SA2"}>Subadult 2</MenuItem>
+                    <MenuItem value={"SA3"}>Subadult 3</MenuItem>
+                    <MenuItem value={"SA4"}>Subadult 4</MenuItem>
+                    <MenuItem value={"A"}>Adult</MenuItem>
+                  </Select>
+                </React.Fragment>
+              ) : (
+                <React.Fragment>
+                  <Select
+                    value={filter.ageClass}
+                    onChange={handleChange("ageClass")}
+                    input={<OutlinedInput labelWidth={0} />}
+                    displayEmpty
+                  >
+                    <MenuItem value="">
+                      <i>Select Age Class</i>
+                    </MenuItem>
+                    <MenuItem value={"P"}>Pup</MenuItem>
+                    <MenuItem value={"W"}>Weanling</MenuItem>
+                    <MenuItem value={"J"}>Juvenile</MenuItem>
+                    <MenuItem value={"A"}>Adult</MenuItem>
+                  </Select>
+                </React.Fragment>
+              )}
             </FormControl>
             {filter.ageClass === "P" ? (
               <TextField

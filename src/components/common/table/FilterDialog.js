@@ -105,6 +105,19 @@ class FilterDialog extends React.Component {
   handleChangeFilter = name => event => {
     let newFilter = this.state.filter;
     newFilter[name] = event.target.value;
+
+
+    if (
+      name === "sex" &&
+      event.target.value !== "male" &&
+      (newFilter.ageClass === "SA1" ||
+        newFilter.ageClass === "SA2" ||
+        newFilter.ageClass === "SA3" ||
+        newFilter.ageClass === "SA4")
+    ) {
+      newFilter.ageClass = "";
+    }
+
     this.setState({
       filter: newFilter
     });
@@ -122,6 +135,7 @@ class FilterDialog extends React.Component {
   editItem = name => id => field => event => {
     let newFilter = this.state.filter;
     newFilter[name][id][field] = event.target.value;
+
     this.setState({
       filter: newFilter
     });
