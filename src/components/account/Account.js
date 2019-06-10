@@ -8,8 +8,10 @@ import Divider from "@material-ui/core/Divider";
 import Typography from "@material-ui/core/Typography";
 import EditInfoButton from "./EditInfoButton";
 import Grid from "@material-ui/core/Grid";
-import Switch from "@material-ui/core/Switch";
 import Header from "../common/Header";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
+import FormControl from "@material-ui/core/FormControl";
 
 const styles = theme => ({
   root: {
@@ -18,6 +20,9 @@ const styles = theme => ({
   },
   dividerFullWidth: {
     margin: `5px 0 0 ${theme.spacing.unit * 2}px`
+  },
+  formControl: {
+    minWidth: 150
   }
 });
 
@@ -28,29 +33,26 @@ class Account extends React.Component {
       firstName: "John",
       lastName: "Doe",
       username: "joe",
-      password: "password",
       email: "joe@john.doe",
-      role: "Citizen Joe",
       affiliation: "Doe",
+      role: "Admin",
       permissions: {
         1: true,
-        2: true,
+        2: false,
         3: true,
-        4: true,
+        4: false,
         5: true,
-        6: true
+        6: false
       }
     };
   }
 
-  handleChange = type => value => {
+  handleDone = type => value => {
     this.setState({ [type]: value });
   };
 
-  handleChangePermission = id => event => {
-    let newPermissions = this.state.permissions;
-    newPermissions[id] = event.target.checked;
-    this.setState({ permissions: newPermissions });
+  handleChange = type => event => {
+    this.setState({ [type]: event.target.value });
   };
 
   render() {
@@ -72,19 +74,9 @@ class Account extends React.Component {
         value: this.state.username
       },
       {
-        key: "password",
-        desc: "Password",
-        value: "*".repeat(this.state.password.length)
-      },
-      {
         key: "email",
         desc: "Email",
         value: this.state.email
-      },
-      {
-        key: "role",
-        desc: "Role",
-        value: this.state.role
       },
       {
         key: "affiliation",
@@ -97,38 +89,32 @@ class Account extends React.Component {
       {
         key: 1,
         id: 1,
-        name: "Adding Observations",
-        desc: "Permission 1 description"
+        name: "Adding Observations"
       },
       {
         key: 2,
         id: 2,
-        name: "Approving Observations",
-        desc: "Permission 2 description"
+        name: "Approving Observations"
       },
       {
         key: 3,
         id: 3,
-        name: "Modifying Observations",
-        desc: "Permission 3 description"
+        name: "Modifying Observations"
       },
       {
         key: 4,
         id: 4,
-        name: "Archiving Observations",
-        desc: "Permission 4 description"
+        name: "Archiving Observations"
       },
       {
         key: 5,
         id: 5,
-        name: "Mass Importing Observations",
-        desc: "Permission 5 description"
+        name: "Mass Importing Observations"
       },
       {
         key: 6,
         id: 6,
-        name: "Mass Exporting Observations",
-        desc: "Permission 6 description"
+        name: "Mass Exporting Observations"
       }
     ];
 
@@ -157,12 +143,37 @@ class Account extends React.Component {
                       <ListItemText primary={entry.value} />
                       <EditInfoButton
                         desc={entry.desc}
-                        handleChange={this.handleChange(entry.key)}
+                        handleChange={this.handleDone(entry.key)}
                       />
                     </ListItem>
                     <Divider component="li" />
                   </React.Fragment>
                 ))}
+                <li>
+                  <Typography
+                    className={classes.dividerFullWidth}
+                    color="textSecondary"
+                    variant="caption"
+                  >
+                    Role
+                  </Typography>
+                </li>
+                <ListItem>
+                  <FormControl className={classes.formControl}>
+                    <Select
+                      value={this.state.role}
+                      onChange={this.handleChange("role")}
+                      displayEmpty
+                    >
+                      <MenuItem value={"Citizen Scientist"}>
+                        Citizen Scientist
+                      </MenuItem>
+                      <MenuItem value={"Scientist"}>Scientist</MenuItem>
+                      <MenuItem value={"Admin"}>Admin</MenuItem>
+                    </Select>
+                  </FormControl>
+                </ListItem>
+                <Divider component="li" />
               </List>
             </Grid>
             <Grid item xs={6}>
@@ -175,11 +186,11 @@ class Account extends React.Component {
                     <ListItem>
                       <ListItemText
                         primary={permission.name}
-                        secondary={permission.desc}
-                      />
-                      <Switch
-                        checked={this.state.permissions[permission.id]}
-                        onChange={this.handleChangePermission(permission.id)}
+                        secondary={
+                          this.state.permissions[permission.id]
+                            ? "Enabled"
+                            : "Disabled"
+                        }
                       />
                     </ListItem>
                     <Divider component="li" />
