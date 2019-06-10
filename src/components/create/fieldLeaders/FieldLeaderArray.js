@@ -11,8 +11,20 @@ class FieldLeaderArray extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            count: 1,
+            count: (props.currentValue) ? props.currentValue.split(',').length : 1,
         };
+    }
+
+    componentDidUpdate(prevProps) {
+        const pc = prevProps.currentValue;
+        const cc = this.props.currentValue;
+
+        if (pc !== cc) {
+            this.setState({
+                count: cc.split(',').length
+            })
+        }
+
     }
 
     addFieldLeader = () => {
@@ -25,9 +37,6 @@ class FieldLeaderArray extends React.Component {
     renderFields = (count) => ({fields}) => {
         for (let i = 0; i < (count - fields.length); i++) {
             fields.push('')
-        }
-        for (let i = (fields.length - count); i > 0; i--) {
-            fields.remove(fields.length - 1)
         }
 
         return fields.map((field, index) => {

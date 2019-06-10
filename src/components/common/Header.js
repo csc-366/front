@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import CreateModalButton from "../create/CreateObservationDialog";
 import ImportModalButton from '../import/ImportObservationDialog';
+import ExportModalButton from '../export/ExportObservationDialog';
 import {logout} from "../../actions/user";
 import {connect} from 'react-redux';
 
@@ -39,7 +40,7 @@ class Header extends React.Component {
             return (
                 <>
                     <Button color={"inherit"} component={Link} to="/manage_users">Manage Users</Button>
-                    <Button color={"inherit"} component={Link} to="/admin">Adminstration</Button>
+                    <Button color={"inherit"} component={Link} to="/admin">Administration</Button>
                 </>
             )
         }
@@ -52,14 +53,16 @@ class Header extends React.Component {
             <div className={classes.root}>
                 <AppBar position={"static"}>
                     <Toolbar>
-                        <Link to={'/'} className={[classes.link, classes.grow].join(' ')}>
-                            <Typography variant={"h6"} color={"inherit"}>
-                                SeaQL
-                            </Typography>
-                        </Link>
+                        <div className={classes.grow}>
+                            <Link to={'/'} className={classes.link}>
+                                <Typography variant={"h6"} color={"inherit"}>
+                                    SeaQL
+                                </Typography>
+                            </Link>
+                        </div>
+                        <ExportModalButton/>
                         <ImportModalButton/>
                         <CreateModalButton/>
-                        <Button color={"inherit"} component={Link} to="/dashboard">Dashboard</Button>
                         {this.renderAdminFunctions()}
                         <Button color={"inherit"} component={Link} to="/account">Account</Button>
                         <Button color={"inherit"} onClick={this.logout}>Logout</Button>

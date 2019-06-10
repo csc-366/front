@@ -60,7 +60,7 @@ class Login extends React.Component {
     }
 
     componentDidMount() {
-        if(!!this.props.username) {
+        if(this.props.isLoggedIn) {
             history.push('/dashboard')
         }
     }
@@ -131,6 +131,7 @@ Login.propTypes = {
 
 const mapStateToProps = state => {
     return {
+        isLoggedIn: !!state.user.username && (state.user.status === 'Active'),
         username: state.user.username,
         password: state.user.password,
         error: state.user.logInError

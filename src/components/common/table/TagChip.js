@@ -24,22 +24,25 @@ const mapColor = (colorAbbrev) => {
         case 'O':
             return "orange";
         default:
-            return "default"
+            return "black"
     }
 };
 
 const TagChip = ({number, position, color}) => {
+    if (number) {
+        console.log(number);
+    }
     const backgroundColor = mapColor(color);
     const textColor = (['W','P','V','R','Y','O'].includes(color)) ? '#333' : '#DDD';
     return (
-        <Chip label={`${number}@${position}`} style={{backgroundColor:backgroundColor, color: textColor}}/>
+        <Chip label={`${number ? number : '?'}@${position ? position : '?'}`} style={{backgroundColor:backgroundColor, color: textColor}}/>
     );
 };
 
 TagChip.propTypes = {
-    number: PropTypes.string.isRequired,
-    position: PropTypes.string.isRequired,
-    color: PropTypes.string.isRequired
+    number: PropTypes.string,
+    position: PropTypes.string,
+    color: PropTypes.string
 };
 
 export default withStyles(defaultStyles)(TagChip);

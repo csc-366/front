@@ -1,28 +1,30 @@
-import {GET_LOCATIONS, GET_TAG_POSITIONS, GET_TAG_COLORS, PURGE} from "../actions/types";
+import {DELETE_VALUE, GET_PRESET_DATA, PURGE, UPDATE_PRESET_DATA} from "../actions/types";
 
 const initialState = {
     locations: [],
     positions: [],
-    colors: []
+    colors: [],
+    rookeries: [],
+    ageClasses: [],
+    affiliations: []
 };
 
 export function formOptionsReducer(state=initialState, action) {
     switch(action.type) {
-        case GET_LOCATIONS:
+        case GET_PRESET_DATA:
+        case UPDATE_PRESET_DATA:
             return {
                 ...state,
-                locations: action.payload.locations
+                ...action.payload
             };
-        case GET_TAG_COLORS:
+        case DELETE_VALUE: {
+            const [valueType, valueKey, value] = action.payload.value;
+            const newGroup = state[valueType].filter(v => v[valueKey] !== value);
             return {
                 ...state,
-                colors: action.payload.colors
+                [valueType]: newGroup
             };
-        case GET_TAG_POSITIONS:
-            return {
-                ...state,
-                positions: action.payload.positions
-            };
+        }
         case PURGE:
             return initialState;
         default:

@@ -10,7 +10,7 @@ import rootReducer from './reducers';
 const persistConfig = {
     key: 'root',
     storage,
-    whitelist: ['user'],
+    whitelist: ['user', 'formOptions'],
     stateReconciler: autoMergeLevel2
 };
 

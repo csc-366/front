@@ -1,5 +1,4 @@
 import {LOG_OUT, LOG_IN, REGISTER, SET_USER_INFORMATION, PURGE} from '../actions/types';
-import history from "../history";
 
 const initialState = {
     username: null,
@@ -24,7 +23,6 @@ export function userReducer(state=initialState, action) {
                 ...action.payload.user
             };
         case LOG_OUT:
-            history.push('/');
             return initialState;
         case PURGE:
             return initialState;

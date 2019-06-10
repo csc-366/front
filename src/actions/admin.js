@@ -17,6 +17,19 @@ export const getAllUsers = () => async (dispatch) => {
     }
 };
 
+export const setUserState = (user, userState) => async (dispatch) => {
+    try {
+        await backend.patch(`/users/status/${user.username}`, {status: userState});
+        await getAllUsers();
+    } catch (e) {
+        console.log(e.response);
+        dispatch({
+            type: ERROR,
+            payload: {message: e.response.data.message}
+        })
+    }
+};
+
 export const setManagedUser = (managedUser) => {
     return {
         type: SET_MANAGED_USER,

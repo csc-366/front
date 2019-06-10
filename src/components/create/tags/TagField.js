@@ -10,6 +10,7 @@ import {Field, Fields} from 'redux-form';
 
 import defaultStyles from '../../../defaultStyles';
 import SelectField from "../SelectField";
+import {connect} from 'react-redux';
 
 const styles = theme => {
     return {...defaultStyles(theme)}
@@ -48,19 +49,10 @@ class TagField extends React.Component {
                 <Field name={`${name}.number`} component={this.renderTagNumber} classes={classes}/>
 
                 <SelectField name={`${name}.color`} label={"Color"}
-                             values={Object.entries({
-                                 W: "White",
-                                 B: "Blue",
-                                 G: "Green",
-                                 P: "Pink",
-                                 V: "Violet",
-                                 R: "Red",
-                                 Y: "Yellow",
-                                 O: "Orange"
-                             })}/>
+                             values={Object.entries(this.props.colors.reduce((agg, color) => ({...agg, [color.Color]: color.ColorName}),{}))}/>
 
                 <SelectField name={`${name}.position`} label={"Position"}
-                             values={Object.entries({P: "Left", W: "Right", J: "Back"})}/>
+                             values={Object.entries(this.props.positions.reduce((agg, position) => ({...agg, [position.Position]: position.Position}), {}))}/>
 
                 <Field name={`${name}.isNew`} component={this.renderIsNew} classes={classes}/>
             </div>
@@ -79,4 +71,11 @@ TagField.propTypes = {
     name: PropTypes.string.isRequired
 };
 
-export default withStyles(styles)(TagField);
+const mapStateToProps = state => {
+    return {
+        positions: state.formOptions.positions,
+        colors: state.formOptions.colors
+    }
+};
+
+export default connect(mapStateToProps)(withStyles(styles)(TagField));

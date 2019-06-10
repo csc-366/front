@@ -3,7 +3,6 @@ import {withStyles} from '@material-ui/core/styles';
 import defaultStyles from '../../defaultStyles';
 import PropTypes from 'prop-types';
 import TextField from '@material-ui/core/TextField';
-import {jsDateToMySQLDate} from "../../util/dates";
 import {Field} from 'redux-form';
 
 const styles = theme => ({
@@ -13,8 +12,6 @@ const styles = theme => ({
 class DateField extends React.Component {
     renderTextField = ({input: {value, onChange}, label}) => {
         const {classes} = this.props;
-        if (!value)
-            onChange(jsDateToMySQLDate(new Date()));
         return (
             <TextField
                 margin="dense"
@@ -39,7 +36,7 @@ class DateField extends React.Component {
 }
 
 DateField.propTypes = {
-    classes: PropTypes.object.isRequired
+    classes: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(DateField);

@@ -70,7 +70,7 @@ Cover.propTypes = {
 
 const mapStateToProps = state => {
     return {
-        isLoggedIn: !!state.user.username
+        isLoggedIn: !!state.user.username && (state.user.status === 'Active')
     }
 };
 

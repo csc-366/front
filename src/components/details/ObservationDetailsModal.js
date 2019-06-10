@@ -28,13 +28,13 @@ class ObservationDetailsModal extends React.Component {
         super(props);
         this.state = {
             open: props.open,
-            observation: getObservation(props.observationId)
+            observation: getObservation(props.ObservationId)
         };
     }
 
     componentDidUpdate(prevProps) {
         if (prevProps !== this.props) {
-            this.setState({open: this.props.open, observation: getObservation(this.props.observationId)})
+            this.setState({open: this.props.open, observation: getObservation(this.props.ObservationId)})
         }
     }
 
@@ -130,7 +130,7 @@ class ObservationDetailsModal extends React.Component {
 ObservationDetailsModal.propTypes = {
     classes: PropTypes.object.isRequired,
     open: PropTypes.bool.isRequired,
-    observationId: PropTypes.number.isRequired
+    ObservationId: PropTypes.number.isRequired
 };
 
 export default withStyles(styles)(ObservationDetailsModal);
