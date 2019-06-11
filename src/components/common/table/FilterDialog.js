@@ -109,17 +109,6 @@ class FilterDialog extends React.Component {
     let newFilter = this.state.filter;
     newFilter[name] = event.target.value;
 
-    if (
-      name === "sex" &&
-      event.target.value !== "male" &&
-      (newFilter.ageClass === "SA1" ||
-        newFilter.ageClass === "SA2" ||
-        newFilter.ageClass === "SA3" ||
-        newFilter.ageClass === "SA4")
-    ) {
-      newFilter.ageClass = "";
-    }
-
     this.setState({
       filter: newFilter
     });
