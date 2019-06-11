@@ -83,7 +83,6 @@ class FilterDialog extends React.Component {
       this.setState({
         filterSeals: bool,
         filter: {
-          open: false,
           dateStart: "",
           dateEnd: "",
           location: "",

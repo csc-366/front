@@ -9,7 +9,7 @@ import Typography from "@material-ui/core/Typography";
 import EditInfoButton from "./EditInfoButton";
 import Grid from "@material-ui/core/Grid";
 import Header from "../common/Header";
-import {connect} from 'react-redux';
+import { connect } from "react-redux";
 
 const styles = theme => ({
   root: {
@@ -28,21 +28,55 @@ class Account extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      firstName: "John",
-      lastName: "Doe",
-      username: "joe",
-      email: "joe@john.doe",
-      affiliation: "Doe",
-      role: "Admin",
+      firstName: "",
+      lastName: "",
+      username: "",
+      email: "",
+      affiliation: "",
       permissions: {
-        1: true,
+        1: false,
         2: false,
-        3: true,
+        3: false,
         4: false,
-        5: true,
+        5: false,
         6: false
       }
     };
+  }
+
+  componentDidMount() {
+    let permissions;
+    if (this.props.user.role === "Citizen Scientist") {
+      permissions = {
+        1: true,
+        2: false,
+        3: false,
+        4: false,
+        5: true,
+        6: true
+      };
+    } else if (
+      this.props.user.role === "Scientist" ||
+      this.props.user.role === "Admin"
+    ) {
+      permissions = {
+        1: true,
+        2: true,
+        3: true,
+        4: true,
+        5: true,
+        6: true
+      };
+    }
+
+    this.setState({
+      firstName: this.props.user.firstName,
+      lastName: this.props.user.lastName,
+      username: this.props.user.username,
+      email: this.props.user.email,
+      affiliation: this.props.user.affiliation,
+      permissions: permissions
+    });
   }
 
   handleDone = type => value => {
@@ -59,27 +93,27 @@ class Account extends React.Component {
       {
         key: "firstName",
         desc: "First Name",
-        value: user.firstName
+        value: this.state.firstName
       },
       {
         key: "lastName",
         desc: "Last Name",
-        value: user.lastName
+        value: this.state.lastName
       },
       {
         key: "username",
         desc: "Username",
-        value: user.username
+        value: this.state.username
       },
       {
         key: "email",
         desc: "Email",
-        value: user.email
+        value: this.state.email
       },
       {
         key: "affiliation",
         desc: "Affiliation",
-        value: user.affiliation
+        value: this.state.affiliation
       }
     ];
 
@@ -147,6 +181,19 @@ class Account extends React.Component {
                     <Divider component="li" />
                   </React.Fragment>
                 ))}
+                <li>
+                  <Typography
+                    className={classes.dividerFullWidth}
+                    color="textSecondary"
+                    variant="caption"
+                  >
+                    Role
+                  </Typography>
+                </li>
+                <ListItem>
+                  <ListItemText primary={user.role} />
+                </ListItem>
+                <Divider component="li" />
               </List>
             </Grid>
             <Grid item xs={6}>
@@ -185,7 +232,7 @@ Account.propTypes = {
 const mapStateToProps = state => {
   return {
     user: state.user
-  }
+  };
 };
 
 export default connect(mapStateToProps)(withStyles(styles)(Account));
