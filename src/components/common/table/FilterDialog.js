@@ -70,8 +70,7 @@ class FilterDialog extends React.Component {
           ageClass: "",
           ageDays: "",
           pupCount: "",
-          moltStart: "",
-          moltEnd: ""
+          molt: ""
         }
       });
     } else {
@@ -89,8 +88,7 @@ class FilterDialog extends React.Component {
           ageClass: "",
           ageDays: "",
           pupCount: "",
-          moltStart: "",
-          moltEnd: ""
+          molt: ""
         }
       });
     }
