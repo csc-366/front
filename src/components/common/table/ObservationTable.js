@@ -17,7 +17,6 @@ import {connect} from 'react-redux';
 import {getPendingObservations} from "../../../actions/pendingObservation";
 import PendingObservationDetailsModal from "../../details/PendingObservationDetailsModal";
 
-
 const styles = theme => ({
     ...defaultStyles(theme),
     root: {
@@ -42,7 +41,27 @@ class ObservationTable extends React.Component {
         openDetails: false,
         ObservationId: -1,
         pageDidChange: false,
-        countDidChange: false
+        countDidChange: false,
+        filterSeals: true,
+        filter: {
+            name: "",
+            markIndex: 0,
+            marks: {},
+            tagIndex: 0,
+            tags: {},
+            sex: "",
+            dateStart: "",
+            dateEnd: "",
+            location: "",
+            recorder: "",
+            fieldLeaderIndex: 0,
+            fieldLeaders: {},
+            ageClass: "",
+            ageDays: "",
+            pupCount: "",
+            moltStart: "",
+            moltEnd: ""
+        }
     };
 
     componentDidMount() {
@@ -62,8 +81,8 @@ class ObservationTable extends React.Component {
             order = 'asc';
         }
 
-        this.setState({order, orderBy});
-    };
+    this.setState({ order, orderBy });
+  };
 
     handleClick = (event, id) => {
         this.setState({ObservationId: id, openDetails: true});
@@ -93,6 +112,13 @@ class ObservationTable extends React.Component {
             tagComponents.push(<TagChip key={i} number={number} position={position} color={color}/>)
         }
         return tagComponents;
+    };
+
+    setFilter = (filterSeals, filter) => {
+        this.setState({
+            filterSeals: filterSeals,
+            filter: filter
+        });
     };
 
     renderPendingObservations = () => {
@@ -147,7 +173,12 @@ class ObservationTable extends React.Component {
         return (
             <>
                 <Paper className={classes.root}>
-                    <ObservationTableToolbar numSelected={selected.length}/>
+                    <ObservationTableToolbar
+                        numSelected={selected.length}
+                        filterSeals={this.state.filterSeals}
+                        filter={this.state.filter}
+                        setFilter={this.setFilter}
+                    />
                     <div className={classes.tableWrapper}>
                         <Table className={classes.table} aria-labelledby="tableTitle">
                             <ObservationTableHead
