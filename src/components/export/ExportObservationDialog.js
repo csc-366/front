@@ -10,7 +10,6 @@ import DialogContent from '@material-ui/core/DialogContent';
 import Dialog from '@material-ui/core/Dialog';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem'
-import {backend} from "../../apis/backend";
 
 const styles = theme => ({
     ...defaultStyles(theme),
@@ -29,6 +28,9 @@ const styles = theme => ({
     },
     errorHeader: {
         marginLeft: theme.spacing.unit
+    },
+    selectField: {
+        marginLeft: theme.spacing.unit
     }
 });
 
@@ -36,7 +38,8 @@ class ExportObservationDialog extends React.Component {
     state = {
         open: false,
         submitted: false,
-        exportType: 'pending'
+        exportType: 'pending',
+        exportFormat: 'csv'
     };
 
     handleClickOpen = () => {
@@ -47,26 +50,25 @@ class ExportObservationDialog extends React.Component {
         this.setState({open: false})
     };
 
-    exportData = async () => {
-        const {exportType} = this.state;
-        setTimeout(() => {
-            const response = {
-                file: ``
-            };
-
-            window.open(response.file);
-        }, 100)
-    };
-
     renderDialogContent = () => {
         const {classes} = this.props;
+        const {exportType, exportFormat} = this.state;
         return (
             <DialogContent>
-                <Select value={this.state.exportType} onChange={(event) => {this.setState({exportType: event.target.value})}}>
+                <Select value={this.state.exportType} onChange={(event) => {
+                    this.setState({exportType: event.target.value})
+                }} className={classes.selectField}>
                     <MenuItem value={'pending'}>Pending Observations</MenuItem>
                     <MenuItem value={'complete'}>Complete Observations</MenuItem>
                 </Select>
-                <Button color={'primary'} onClick={this.exportData}>Export</Button>
+                <Select value={this.state.exportFormat} onChange={(event) => {
+                    this.setState({exportFormat: event.target.value})
+                }} className={classes.selectField}>
+                    <MenuItem value={'csv'}>CSV</MenuItem>
+                    <MenuItem value={'json'}>JSON</MenuItem>
+                </Select>
+                <Button color={'primary'} component={'a'} download target={'_blank'}
+                        href={`http://localhost:3001/export/${exportFormat}/${exportType}`}>Export</Button>
             </DialogContent>
         )
     };

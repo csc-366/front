@@ -9,9 +9,7 @@ import Typography from "@material-ui/core/Typography";
 import EditInfoButton from "./EditInfoButton";
 import Grid from "@material-ui/core/Grid";
 import Header from "../common/Header";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
-import FormControl from "@material-ui/core/FormControl";
+import {connect} from 'react-redux';
 
 const styles = theme => ({
   root: {
@@ -56,32 +54,32 @@ class Account extends React.Component {
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, user } = this.props;
     const info = [
       {
         key: "firstName",
         desc: "First Name",
-        value: this.state.firstName
+        value: user.firstName
       },
       {
         key: "lastName",
         desc: "Last Name",
-        value: this.state.lastName
+        value: user.lastName
       },
       {
         key: "username",
         desc: "Username",
-        value: this.state.username
+        value: user.username
       },
       {
         key: "email",
         desc: "Email",
-        value: this.state.email
+        value: user.email
       },
       {
         key: "affiliation",
         desc: "Affiliation",
-        value: this.state.affiliation
+        value: user.affiliation
       }
     ];
 
@@ -89,32 +87,32 @@ class Account extends React.Component {
       {
         key: 1,
         id: 1,
-        name: "Adding Observations"
+        name: "Add Observations"
       },
       {
         key: 2,
         id: 2,
-        name: "Approving Observations"
+        name: "Approve Observations"
       },
       {
         key: 3,
         id: 3,
-        name: "Modifying Observations"
+        name: "Modify Observations"
       },
       {
         key: 4,
         id: 4,
-        name: "Archiving Observations"
+        name: "Archive Observations"
       },
       {
         key: 5,
         id: 5,
-        name: "Mass Importing Observations"
+        name: "Mass Import Observations"
       },
       {
         key: 6,
         id: 6,
-        name: "Mass Exporting Observations"
+        name: "Mass Export Observations"
       }
     ];
 
@@ -149,31 +147,6 @@ class Account extends React.Component {
                     <Divider component="li" />
                   </React.Fragment>
                 ))}
-                <li>
-                  <Typography
-                    className={classes.dividerFullWidth}
-                    color="textSecondary"
-                    variant="caption"
-                  >
-                    Role
-                  </Typography>
-                </li>
-                <ListItem>
-                  <FormControl className={classes.formControl}>
-                    <Select
-                      value={this.state.role}
-                      onChange={this.handleChange("role")}
-                      displayEmpty
-                    >
-                      <MenuItem value={"Citizen Scientist"}>
-                        Citizen Scientist
-                      </MenuItem>
-                      <MenuItem value={"Scientist"}>Scientist</MenuItem>
-                      <MenuItem value={"Admin"}>Admin</MenuItem>
-                    </Select>
-                  </FormControl>
-                </ListItem>
-                <Divider component="li" />
               </List>
             </Grid>
             <Grid item xs={6}>
@@ -209,4 +182,10 @@ Account.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(Account);
+const mapStateToProps = state => {
+  return {
+    user: state.user
+  }
+};
+
+export default connect(mapStateToProps)(withStyles(styles)(Account));
