@@ -16,6 +16,7 @@ import TagChip from "./TagChip";
 import {connect} from 'react-redux';
 import {getPendingObservations} from "../../../actions/pendingObservation";
 import PendingObservationDetailsModal from "../../details/PendingObservationDetailsModal";
+import * as _ from 'lodash';
 
 const styles = theme => ({
     ...defaultStyles(theme),
@@ -59,8 +60,7 @@ class ObservationTable extends React.Component {
             ageClass: "",
             ageDays: "",
             pupCount: "",
-            moltStart: "",
-            moltEnd: ""
+            molt: "",
         }
     };
 
@@ -71,6 +71,7 @@ class ObservationTable extends React.Component {
     // noinspection JSCheckFunctionSignatures
     componentDidUpdate() {
         window.scrollTo(0, 0);
+        console.log(this.state);
     }
 
     handleRequestSort = (event, property) => {
@@ -81,8 +82,8 @@ class ObservationTable extends React.Component {
             order = 'asc';
         }
 
-    this.setState({ order, orderBy });
-  };
+        this.setState({order, orderBy});
+    };
 
     handleClick = (event, id) => {
         this.setState({ObservationId: id, openDetails: true});
@@ -121,6 +122,117 @@ class ObservationTable extends React.Component {
         });
     };
 
+    marksAreEqual = (filterMarks, observationMarks) => {
+        const filterMarkValues = Object.values(filterMarks);
+        console.log(filterMarkValues);
+        return true;
+    };
+
+    tagsAreEqual = (filterTags, observationTags) => {
+        return true;
+    };
+
+    applyFilter = (observation) => {
+        const {filter, filterSeals} = this.state;
+
+        const filters = Object.entries(filter);
+        for (let i = 0; i < filters.length; i++) {
+            let [filterName, filterValue] = filters[i];
+            console.log(filterName, filterValue);
+            switch (filterName) {
+                case 'name':
+                    if (filterValue && filterValue !== observation.Name) {
+                        console.log(`Broke on ${filterName}`);
+                        return false;
+                    }
+                    break;
+                case 'marks':
+                    if (!this.marksAreEqual(filterValue, observation.marks)) {
+                        console.log(`Broke on ${filterName}`);
+                        return false;
+                    }
+                    break;
+                case 'tags':
+                    if (!this.tagsAreEqual(filterValue, observation.tags)) {
+                        console.log(`Broke on ${filterName}`);
+                        return false;
+                    }
+                    break;
+                case 'sex':
+                    if (observation.Sex && filterValue && filterValue !== observation.Sex) {
+                        console.log(`Broke on ${filterName}`);
+                        return false;
+                    }
+                    break;
+                case 'dateStart': {
+                    const filterDate = new Date(filterValue);
+                    const observationDate = new Date(observation.Date);
+
+                    if (observationDate < filterDate) {
+                        console.log(`Broke on ${filterName}`);
+                        return false;
+                    }
+                }
+                break;
+                case 'dateEnd': {
+                    const filterDate = new Date(filterValue);
+                    const observationDate = new Date(observation.Date);
+
+                    if (observationDate > filterDate) {
+                        console.log(`Broke on ${filterName}`);
+                        return false;
+                    }
+                }
+                break;
+                case 'location':
+                    if (observation.Location && filterValue && filterValue !== observation.Location) {
+                        console.log(`Broke on ${filterName}`);
+                        return false;
+                    }
+                    break;
+                case 'recorder':
+                    if (observation.Recorder && filterValue && filterValue !== observation.Recorder) {
+                        console.log(`Broke on ${filterName}`);
+                        return false;
+                    }
+                    break;
+                case 'fieldLeaders':
+                    if (_.difference(filterValue, observation.FieldLeaders).length > 0) {
+                        console.log(`Broke on ${filterName}`);
+                        return false
+                    }
+                    break;
+                case 'ageClass':
+                    if (observation.Age && filterValue && isNaN(observation.Age) && filterValue !== observation.Age) {
+                        console.log(`Broke on ${filterName}`);
+                        return false;
+                    }
+                    break;
+                case 'ageDays':
+                    if (!isNaN(observation.Age) && filterValue !== Number.parseInt(observation.Age)) {
+                        console.log(`Broke on ${filterName}`);
+                        return false;
+                    }
+                    break;
+                case 'pupCount':
+                    if (observation.PupCount && filterValue && filterValue !== observation.PupCount) {
+                        console.log(`Broke on ${filterName}`);
+                        return false;
+                    }
+                    break;
+                case 'molt':
+                    if (observation.MoltPercentage && Number.parseInt(filterValue) > observation.MoltPercentage) {
+                        console.log(`Broke on ${filterName}`);
+                        return false;
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+        return true;
+    };
+
     renderPendingObservations = () => {
         const {classes} = this.props;
         const {order, orderBy, rowsPerPage, page} = this.state;
@@ -134,6 +246,7 @@ class ObservationTable extends React.Component {
             <TableBody className={classes.tableBody}>
                 {stableSort(pendingObservations, getSorting(order, orderBy))
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .filter(this.applyFilter)
                     .map(n => {
                         return (
                             <TableRow
@@ -205,7 +318,8 @@ class ObservationTable extends React.Component {
                         onChangeRowsPerPage={this.handleChangeRowsPerPage}
                     />
                 </Paper>
-                <PendingObservationDetailsModal open={this.state.openDetails} handleClose={this.handleModalClose} ObservationId={this.state.ObservationId}/>
+                <PendingObservationDetailsModal open={this.state.openDetails} handleClose={this.handleModalClose}
+                                                ObservationId={this.state.ObservationId}/>
             </>
         )
     }
