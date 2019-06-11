@@ -151,8 +151,8 @@ class SealFilter extends React.Component {
                                 <MenuItem value="">
                                     <i>Select Sex</i>
                                 </MenuItem>
-                                <MenuItem value={"male"}>Male</MenuItem>
-                                <MenuItem value={"female"}>Female</MenuItem>
+                                <MenuItem value={"M"}>Male</MenuItem>
+                                <MenuItem value={"F"}>Female</MenuItem>
                             </Select>
                         </FormControl>
                     </ListItemText>
