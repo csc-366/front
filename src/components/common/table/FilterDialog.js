@@ -12,6 +12,7 @@ import { withStyles } from "@material-ui/core/styles";
 import Slide from "@material-ui/core/Slide";
 import SealFilter from "./SealFilter";
 import ObservationFilter from "./ObservationFilter";
+import ListItem from "@material-ui/core/ListItem";
 
 const styles = theme => ({
   appBar: {
@@ -20,6 +21,11 @@ const styles = theme => ({
   title: {
     marginLeft: theme.spacing.unit,
     flex: 1
+  },
+  button: {
+    marginLeft: theme.spacing.unit,
+    marginTop: theme.spacing.unit,
+    marginBottom: theme.spacing.unit
   }
 });
 
@@ -233,7 +239,6 @@ class FilterDialog extends React.Component {
           <Button
             variant="contained"
             color={this.state.filterSeals ? "secondary" : null}
-            className={classes.button}
             onClick={() => this.toggleFilter(true)}
           >
             Seal
@@ -241,11 +246,21 @@ class FilterDialog extends React.Component {
           <Button
             variant="contained"
             color={this.state.filterSeals ? null : "secondary"}
-            className={classes.button}
             onClick={() => this.toggleFilter(false)}
           >
             Observation
           </Button>
+          <ListItem>
+            <Button
+              className={classes.button}
+              variant="outlined"
+              onClick={() => {
+                this.toggleFilter(this.state.filterSeals);
+              }}
+            >
+              Reset Filters
+            </Button>
+          </ListItem>
           {this.state.filterSeals ? (
             <SealFilter
               filter={this.state.filter}
