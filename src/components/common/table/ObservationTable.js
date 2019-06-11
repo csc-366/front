@@ -216,20 +216,18 @@ class ObservationTable extends React.Component {
         return true;
     };
 
-    renderPendingObservations = () => {
+    renderPendingObservations = (filteredObservations) => {
         const {classes} = this.props;
         const {order, orderBy, rowsPerPage, page} = this.state;
-        const {pendingObservations} = this.props;
 
-        if (!pendingObservations) {
+        if (!filteredObservations) {
             return null;
         }
-        const emptyRows = rowsPerPage - Math.min(rowsPerPage, pendingObservations.length - page * rowsPerPage);
+        const emptyRows = rowsPerPage - Math.min(rowsPerPage, filteredObservations.length - page * rowsPerPage);
         return (
             <TableBody className={classes.tableBody}>
-                {stableSort(pendingObservations, getSorting(order, orderBy))
+                {stableSort(filteredObservations, getSorting(order, orderBy))
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .filter(this.applyFilter)
                     .map(n => {
                         return (
                             <TableRow
@@ -265,6 +263,7 @@ class ObservationTable extends React.Component {
 
     render() {
         const {classes, pendingObservations} = this.props;
+        const filteredObservations = pendingObservations.filter(this.applyFilter);
         const {order, orderBy, selected, rowsPerPage, page} = this.state;
         return (
             <>
@@ -282,13 +281,13 @@ class ObservationTable extends React.Component {
                                 orderBy={orderBy}
                                 onRequestSort={this.handleRequestSort}
                             />
-                            {this.renderPendingObservations()}
+                            {this.renderPendingObservations(filteredObservations)}
                         </Table>
                     </div>
                     <TablePagination
                         rowsPerPageOptions={[5, 25, 50, 250, 1000, 2000]}
                         component="div"
-                        count={pendingObservations.length}
+                        count={filteredObservations.length}
                         rowsPerPage={rowsPerPage}
                         page={page}
                         backIconButtonProps={{

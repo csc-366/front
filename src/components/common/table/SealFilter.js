@@ -209,8 +209,6 @@ class SealFilter extends React.Component {
                                         [location.Beach]: location.BeachName
                                     };
                                 }, {}))}
-                                <MenuItem value={"ACU"}>ACU</MenuItem>
-                                <MenuItem value={"ACL"}>ACL</MenuItem>
                             </Select>
                         </FormControl>
                         <TextField
