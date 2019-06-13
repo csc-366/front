@@ -1,10 +1,13 @@
-export const SET_FORM_DATA = 'SET_FORM_DATA';
+export const SET_FORM_DATA = "SET_FORM_DATA";
 export const LOAD_PENDING = "LOAD_PENDING";
+export const DECREMENT_FIELD = "DECREMENT_FIELD";
+export const INCREMENT_FIELD = "INCREMENT_FIELD";
+export const LOAD_CREATE = "LOAD_CREATE";
 
-export const SET_MANAGED_USER = 'SET_MANAGED_USER';
+export const SET_MANAGED_USER = "SET_MANAGED_USER";
 
-export const SET_USER_INFORMATION = 'SET_USER_INFORMATION';
-export const LOG_IN = 'LOG_IN';
+export const SET_USER_INFORMATION = "SET_USER_INFORMATION";
+export const LOG_IN = "LOG_IN";
 export const LOG_OUT = "LOG_OUT";
 export const REGISTER = "REGISTER";
 

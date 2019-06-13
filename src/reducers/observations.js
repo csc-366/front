@@ -2,13 +2,13 @@ import {
     GET_PENDING_OBSERVATION,
     GET_PENDING_OBSERVATION_COUNT,
     GET_PENDING_OBSERVATIONS,
-    PURGE
+    PURGE,
 } from "../actions/types";
 
 const initialState = {
     pending: [],
     currentPending: null,
-    pendingCount: 0
+    pendingCount: 0,
 };
 
 export function observationsReducer(state = initialState, action) {
