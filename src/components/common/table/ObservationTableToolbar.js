@@ -51,41 +51,7 @@ let ObservationTableToolbar = props => {
           </Typography>
         ) : (
           <Typography variant="h6" id="tableTitle">
-            {JSON.stringify(filter) ===
-              JSON.stringify({
-                name: "",
-                markIndex: 0,
-                marks: {},
-                tagIndex: 0,
-                tags: {},
-                sex: "",
-                dateStart: "",
-                dateEnd: "",
-                location: "",
-                recorder: "",
-                fieldLeaderIndex: 0,
-                fieldLeaders: {},
-                ageClass: "",
-                ageDays: "",
-                pupCount: "",
-                molt: ""
-              }) ||
-            JSON.stringify(filter) ===
-              JSON.stringify({
-                dateStart: "",
-                dateEnd: "",
-                location: "",
-                recorder: "",
-                fieldLeaderIndex: 0,
-                fieldLeaders: {},
-                sex: "",
-                ageClass: "",
-                ageDays: "",
-                pupCount: "",
-                molt: ""
-              })
-              ? "Pending Observations"
-              : "Filtered Observations"}
+            Pending Observations
           </Typography>
         )}
       </div>
