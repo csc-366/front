@@ -63,6 +63,7 @@ class Header extends React.Component {
                         <ExportModalButton/>
                         <ImportModalButton/>
                         <CreateModalButton/>
+                        <Button color={"inherit"} component={Link} to="/view">View Data</Button>
                         {this.renderAdminFunctions()}
                         <Button color={"inherit"} component={Link} to="/account">Account</Button>
                         <Button color={"inherit"} onClick={this.logout}>Logout</Button>
