@@ -3,6 +3,7 @@ import {Router, Route} from 'react-router-dom';
 import Cover from './cover/Cover';
 import Login from './login/Login';
 import Dashboard from './dashboard/Dashboard';
+import View from './view/view';
 import Register from './register/Register';
 import Account from './account/Account';
 import history from '../history';
@@ -19,6 +20,7 @@ class App extends React.Component {
             return (
                 <>
                     <Route path="/dashboard" component={Dashboard}/>
+                    <Route path="/view" component={View}/>
                     <Route path="/account" component={Account}/>
                 </>
             )
